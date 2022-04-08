@@ -1,0 +1,17 @@
+{
+    "version": 3,
+    "mappings": "AKAA,IAAI,CAAJ,aAAI;AAEJ,AAAA,IAAI,CAAC;EACH,WAAW,EHOC,SAAS;EGNrB,MAAM,EAAE,CAAC;EACT,OAAO,EAAE,CAAC;CACX",
+    "sources": [
+        "base.scss",
+        "sass/_global-imports.scss",
+        "sass/_variables.scss",
+        "sass/_mixins.scss",
+        "sass/_animations.scss",
+        "sass/_typography.scss",
+        "sass/_global.scss",
+        "sass/_mixins.scss",
+        "sass/_functions.scss"
+    ],
+    "names": [],
+    "file": "base.css"
+}
