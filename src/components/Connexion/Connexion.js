@@ -1,10 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Connexion.scss";
-import TOPOLOGY from "vanta/dist/vanta.topology.min";
-import * as p5 from "p5";
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../logo.png";
+import logo from "../../logo.svg";
 import { Formik, Field, Form } from "formik";
 import { Navigate } from "react-router-dom";
 
@@ -14,30 +11,7 @@ function Connexion({fromNotFound}) {
 
   const location = useLocation();
 
-  const [vantaEffect, setVantaEffect] = useState(0);
   const myRef = useRef(null);
-   useEffect(() => {
-    if (!vantaEffect) {
-      setVantaEffect(
-        TOPOLOGY({
-          el: myRef.current,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: true,
-          minHeight: 200.0,
-          minWidth: 200.0,
-          scale: 1.0,
-          scaleMobile: 1.0,
-          color: 0xf8dad9,
-          backgroundColor: 0x1a1a1a,
-          p5: p5, //This is different
-        })
-      );
-    }
-    return () => {
-      if (vantaEffect) vantaEffect.destroy();
-    };
-  }, [vantaEffect]);
 
   console.log(location.pathname);
 
