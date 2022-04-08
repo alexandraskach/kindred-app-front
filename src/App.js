@@ -5,7 +5,10 @@ import "./base.scss";
 function App() {
   return (
     <div className="App">
-      test
+      <h1>Kindred</h1>
+      <p>test</p>
+      <h2>TEST</h2>
+      <h3>TEST</h3>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
