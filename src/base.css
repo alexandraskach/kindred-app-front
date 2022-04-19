@@ -36,4 +36,23 @@ h1 {
   line-height: 50px;
   color: #161616;
 }
+
+@use "./variables";
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+button {
+  background: #f2c84b;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 11px;
+  padding: 4px 30px 4px 30px;
+  border: 1px solid #f2c84b;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 28px;
+}
 /*# sourceMappingURL=base.css.map */

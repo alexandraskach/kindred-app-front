@@ -1,0 +1,17 @@
+@use "./variables";
+
+body {
+  font-family: $font-family;
+}
+button {
+  background: $primaryColor;
+  box-sizing: border-box;
+  border-radius: 11px;
+  padding: 4px 30px 4px 30px;
+  border: 1px solid $primaryColor;
+  font-family: $font-family;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 28px;
+}
