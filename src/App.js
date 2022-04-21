@@ -13,25 +13,12 @@ function App() {
       <p>test</p>
       <h2>TEST</h2>
       <h3>TEST</h3>
-      <button>Lets start !</button>
+      <button>
+        Lets start ! <ArrowRightIcon></ArrowRightIcon>
+      </button>
       <TrashIcon></TrashIcon>
       <EyeClosedIcon></EyeClosedIcon>
       <EditIcon></EditIcon>
-      <ArrowRightIcon></ArrowRightIcon>
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
     </div>
   );
 }
