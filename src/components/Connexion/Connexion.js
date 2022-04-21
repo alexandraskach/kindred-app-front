@@ -1,43 +1,43 @@
 import React, { useEffect, useRef } from "react";
 import "./Connexion.scss";
-import TOPOLOGY from "vanta/dist/vanta.topology.min";
-import * as p5 from "p5";
+// import TOPOLOGY from "vanta/dist/vanta.topology.min";
+// import * as p5 from "p5";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../logo.png";
+// import logo from "../../logo.png";
 import { Formik, Field, Form } from "formik";
 import { Navigate } from "react-router-dom";
 
-function Connexion({fromNotFound}) {
+function Connexion({ fromNotFound }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [roleAdmin, setRoleAdmin] = useState(false);
 
   const location = useLocation();
 
-  const [vantaEffect, setVantaEffect] = useState(0);
-  const myRef = useRef(null);
-   useEffect(() => {
-    if (!vantaEffect) {
-      setVantaEffect(
-        TOPOLOGY({
-          el: myRef.current,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: true,
-          minHeight: 200.0,
-          minWidth: 200.0,
-          scale: 1.0,
-          scaleMobile: 1.0,
-          color: 0xf8dad9,
-          backgroundColor: 0x1a1a1a,
-          p5: p5, //This is different
-        })
-      );
-    }
-    return () => {
-      if (vantaEffect) vantaEffect.destroy();
-    };
-  }, [vantaEffect]);
+  // const [vantaEffect, setVantaEffect] = useState(0);
+  // const myRef = useRef(null);
+  useEffect(() => {
+    //   if (!vantaEffect) {
+    //     setVantaEffect(
+    //       TOPOLOGY({
+    //         el: myRef.current,
+    //         mouseControls: true,
+    //         touchControls: true,
+    //         gyroControls: true,
+    //         minHeight: 200.0,
+    //         minWidth: 200.0,
+    //         scale: 1.0,
+    //         scaleMobile: 1.0,
+    //         color: 0xf8dad9,
+    //         backgroundColor: 0x1a1a1a,
+    //         p5: p5, //This is different
+    //       })
+  });
+
+  //   return () => {
+  //     if (vantaEffect) vantaEffect.destroy();
+  //   };
+  // }, [vantaEffect]);
 
   console.log(location.pathname);
 
@@ -45,10 +45,10 @@ function Connexion({fromNotFound}) {
   const isRegisterPage = location.pathname === "/register";
 
   return (
-    <div className="background" ref={myRef}>
+    <div className="background">
       <div className="container">
         <div className="login-form">
-          <img className="img" src={logo} alt="logo" />
+          {/* <img className="img" src={logo} alt="logo" /> */}
 
           {isSubmitted ? (
             <Navigate to="/dashboard/campaigns" />
