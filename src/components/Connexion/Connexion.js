@@ -5,23 +5,19 @@ import logo from "../../logo.svg";
 import { Formik, Field, Form } from "formik";
 import { Navigate } from "react-router-dom";
 
-function Connexion({fromNotFound}) {
+function Connexion({ fromNotFound }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [roleAdmin, setRoleAdmin] = useState(false);
 
   const location = useLocation();
 
-  const myRef = useRef(null);
-
   const isLoginPage = location.pathname === "/" || fromNotFound;
   const isRegisterPage = location.pathname === "/register";
 
   return (
-    <div className="background" ref={myRef}>
+    <div className="background">
       <div className="container">
         <div className="login-form">
-          {/* <img className="img" src={logo} alt="logo" /> */}
-
           {isSubmitted ? (
             <Navigate to="/dashboard/campaigns" />
           ) : roleAdmin ? (
