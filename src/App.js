@@ -1,13 +1,13 @@
-// import logo from "./logo.svg";
-import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Connexion from "./components/Connexion/Connexion";
+import ParentSettings from "./components/Settings/Parent-Settings/Parent-Settings";
+import './App.css';
 import "./base.scss";
 // import ArrowRightIcon from "./icons/ArrowRightIcon";
 // import EditIcon from "./icons/EditIcon";
 // import EyeClosedIcon from "./icons/EyeClosedIcon";
 // import LockIcon from "./icons/LockIcon";
 // import TrashIcon from "./icons/TrashIcon";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Connexion from "./components/Connexion/Connexion";
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +19,9 @@ function App() {
         <Route path="/register" element={<Connexion />} />
         <Route path="/" element={<Connexion />} />
         <Route path="*" element={<Connexion fromNotFound />} />
+        <Route path="/settings" element={<ParentSettings />} />
+        <Route path="/change-password" element={<ParentSettings />} />
+        <Route path="/logout" element={<ParentSettings />} />
       </Routes>
     </BrowserRouter>
     // <div className="App">
