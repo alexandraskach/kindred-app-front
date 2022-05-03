@@ -6,6 +6,7 @@ import EditIcon from '../../../icons/EditIcon';
 import { Link, useLocation } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import { Formik, Field, Form } from "formik";
+import Header from '../../Header/Header';
 
 function ParentSettings() {
 
@@ -17,7 +18,7 @@ function ParentSettings() {
   
   return (
     <div className=''>
-      <div className='title'>Kindred</div>
+      <Header retour="true"></Header>
       {isSettingsPage ? (
         <>
           <div className='container'>
@@ -107,13 +108,6 @@ function ParentSettings() {
                 <div className="button-container">
                   <button type="submit">Sign in</button>
                 </div>
-
-                <span className="account-text">
-                  <p>
-                    Don't have an account? Sign up
-                    <Link to="/register">&nbsp;here</Link>
-                  </p>
-                </span>
               </Form>
             </Formik>
           </div>
