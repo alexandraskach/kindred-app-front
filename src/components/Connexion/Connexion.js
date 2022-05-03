@@ -184,7 +184,12 @@ function Connexion({ fromNotFound }) {
           >
             <div className="form">
               <Form>
-                <p className="title">Sign up</p>
+                <div className="title-block">
+                  <h3>Welcome</h3>
+                  <p className="title-block__title">
+                    Fill your email and password
+                  </p>
+                </div>
                 <div className="row">
                   <div className="input-container asColumn">
                     <div>
@@ -193,51 +198,28 @@ function Connexion({ fromNotFound }) {
                         type="email"
                         name="email"
                         className="input"
+                        placeholder="example@gmail.com"
                         required
                       />
                     </div>
-                    <div>
-                      <label>Password</label>
+                    <div className="input-container">
+                      <label className="input-container__password">
+                        Password
+                      </label>
                       <Field
                         type="password"
                         name="password"
                         className="input"
+                        placeholder="Enter your password"
                         required
                       />
                     </div>
                     <div>
-                      <label>Age</label>
                       <Field
                         type="text"
                         name="age"
                         className="input"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label>Name</label>
-                      <Field
-                        type="text"
-                        name="name"
-                        className="input"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label>Size</label>
-                      <Field
-                        type="text"
-                        name="size"
-                        className="input"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label>Weight</label>
-                      <Field
-                        type="text"
-                        name="weight"
-                        className="input"
+                        placeholder="Confirm your password"
                         required
                       />
                     </div>
