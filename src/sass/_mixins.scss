@@ -1,3 +1,5 @@
+@import "./variables";
+
 @mixin textGray {
   font-style: normal;
   font-weight: 400;
@@ -11,4 +13,46 @@
   font-style: normal;
   font-weight: 600;
   color: $fontColor;
+}
+@mixin buttonPrimary {
+  background: $primaryColor;
+  box-sizing: border-box;
+  border-radius: 11px;
+  padding: 4px 30px 4px 30px;
+  border: 1px solid $primaryColor;
+  font-family: $font-family;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 28px;
+  width: 100%;
+}
+
+@mixin buttonOutline {
+  background: #ffff;
+  box-sizing: border-box;
+  border-radius: 11px;
+  padding: 4px 30px 4px 30px;
+  border: 1px solid $fontColor;
+  font-family: $font-family;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 28px;
+  width: 100%;
+}
+
+@mixin buttonDark {
+  background: $fontColor;
+  box-sizing: border-box;
+  border-radius: 11px;
+  padding: 4px 30px 4px 30px;
+  border: 1px solid $fontColor;
+  font-family: $font-family;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 28px;
+  width: 100%;
+  color: #ffff;
 }

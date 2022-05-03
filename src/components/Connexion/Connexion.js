@@ -99,7 +99,7 @@ function Connexion({ fromNotFound }) {
                   {/* {renderErrorMessage("pass")}
         {renderErrorMessage("email")} */}
                   <div className="button-container">
-                    <button type="submit">
+                    <button className="button-primary" type="submit">
                       Sign in
                       <ArrowRightIcon />
                     </button>
@@ -196,7 +196,9 @@ function Connexion({ fromNotFound }) {
                   </div>
                 </div>
                 <div className="button-container">
-                  <button type="submit">Let's start</button>
+                  <button className="button-primary" type="submit">
+                    Let's start
+                  </button>
                 </div>
 
                 <div className="account-text">
