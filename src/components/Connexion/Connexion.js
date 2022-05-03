@@ -13,8 +13,6 @@ function Connexion({fromNotFound}) {
 
   const myRef = useRef(null);
 
-  console.log(location.pathname);
-
   const isLoginPage = location.pathname === "/" || fromNotFound;
   const isRegisterPage = location.pathname === "/register";
 
@@ -22,7 +20,7 @@ function Connexion({fromNotFound}) {
     <div className="background" ref={myRef}>
       <div className="container">
         <div className="login-form">
-          <img className="img" src={logo} alt="logo" />
+          {/* <img className="img" src={logo} alt="logo" /> */}
 
           {isSubmitted ? (
             <Navigate to="/dashboard/campaigns" />
@@ -36,6 +34,17 @@ function Connexion({fromNotFound}) {
                   initialValues={{
                     email: "",
                     password: "",
+                  }}
+                  validate={values => {
+                    const errors = {};
+                    if (!values.email) {
+                      errors.email = 'Required';
+                    } else if (
+                      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                    ) {
+                      errors.email = 'Invalid email address';
+                    }
+                    return errors;
                   }}
                   onSubmit={async (values) => {
                     fetch(process.env.REACT_APP_API + "/api/login", {
@@ -105,6 +114,17 @@ function Connexion({fromNotFound}) {
                 name: "",
                 email: "",
                 password: "",
+              }}
+              validate={values => {
+                const errors = {};
+                if (!values.email) {
+                  errors.email = 'Required';
+                } else if (
+                  !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                ) {
+                  errors.email = 'Invalid email address';
+                }
+                return errors;
               }}
               onSubmit={async (values) => {
                 console.log(values);
