@@ -79,6 +79,7 @@ function Connexion({ fromNotFound }) {
                   <div className="input-container">
                     <label>Email </label>
                     <Field
+                      className="input-mail"
                       type="email"
                       name="email"
                       placeholder="example@gmail.com"
@@ -90,6 +91,7 @@ function Connexion({ fromNotFound }) {
                       Password
                     </label>
                     <Field
+                      className="input-password"
                       type="password"
                       placeholder="Enter your password"
                       name="password"
@@ -101,7 +103,6 @@ function Connexion({ fromNotFound }) {
                   <div className="button-container">
                     <button className="button-primary" type="submit">
                       Sign in
-                      <ArrowRightIcon />
                     </button>
                   </div>
                   <div className="checkbox">
@@ -165,9 +166,9 @@ function Connexion({ fromNotFound }) {
                     <div>
                       <label>Email</label>
                       <Field
+                        className="input-mail"
                         type="email"
                         name="email"
-                        className="input"
                         placeholder="example@gmail.com"
                         required
                       />
@@ -177,18 +178,18 @@ function Connexion({ fromNotFound }) {
                         Password
                       </label>
                       <Field
+                        className="input-password"
                         type="password"
                         name="password"
-                        className="input"
                         placeholder="Enter your password"
                         required
                       />
                     </div>
                     <div>
                       <Field
+                        className="input-password"
                         type="text"
                         name="age"
-                        className="input"
                         placeholder="Confirm your password"
                         required
                       />
@@ -197,7 +198,11 @@ function Connexion({ fromNotFound }) {
                 </div>
                 <div className="button-container">
                   <button className="button-primary" type="submit">
-                    Let's start
+                    Let's start !
+                    <span className="button-container__icon">
+                      {" "}
+                      <ArrowRightIcon />
+                    </span>
                   </button>
                 </div>
 

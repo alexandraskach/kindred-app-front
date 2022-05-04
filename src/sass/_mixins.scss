@@ -56,3 +56,9 @@
   width: 100%;
   color: #ffff;
 }
+
+@mixin iconForm($url) {
+  background-image: url($url);
+  background-position: 9px 9px;
+  background-repeat: no-repeat;
+}
