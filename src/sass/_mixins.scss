@@ -62,3 +62,9 @@
   background-position: 9px 9px;
   background-repeat: no-repeat;
 }
+
+@mixin mobile-only {
+  @media screen and (max-width: map-get($breakpoints, screen-sm)) {
+    @content;
+  }
+}
