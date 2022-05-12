@@ -63,6 +63,9 @@ label {
 a {
   color: $secondaryColor;
   text-decoration: none;
+  &:hover {
+    border-bottom: 1px dotted $secondaryColor;
+  }
 }
 input[type="checkbox"] {
   border: 1px solid $fontGray;
