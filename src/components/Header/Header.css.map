@@ -1,8 +1,11 @@
 {
     "version": 3,
-    "mappings": "",
+    "mappings": "AAEA,AAAA,OAAO,CAAC;EACN,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,MAAM;EACnB,eAAe,EAAE,MAAM;EACvB,GAAG,EAAE,KAAK;EACV,UAAU,EAAE,IAAI;CAmBjB;;AEwCC,MAAM,CAAC,MAAM,MAAM,SAAS,EAAE,KAAK;EFhErC,AAAA,OAAO,CAAC;IAOJ,GAAG,EAAE,KAAK;GAiBb;;;AAfE,AAAD,eAAS,CAAC;EACR,UAAU,EAAE,IAAI;EAChB,MAAM,EAAE,IAAI;EACZ,WAAW,ECFD,SAAS,EAAE,UAAU;EDG/B,OAAO,EAAE,eAAe;CAUzB;;AAdA,AAKC,eALO,AAKN,MAAM,CAAC;EACN,UAAU,ECgBJ,OAAO;EDfb,aAAa,EAAE,IAAI;EACnB,MAAM,EAAE,OAAO;CAChB;;AACA,AAAD,oBAAM,CAAC,GAAG,CAAC;EACT,aAAa,EAAE,IAAI;EACnB,YAAY,EAAE,GAAG;CAClB;;AAGL,AAAA,KAAK,CAAC;EACJ,WAAW,ECfW,WAAW,EAAE,OAAO;EDgB1C,SAAS,EAAE,MAAM;CAClB",
     "sources": [
-        "Header.scss"
+        "Header.scss",
+        "../../sass/_variables.scss",
+        "../../sass/_mixins.scss",
+        "../../sass/_variables.scss"
     ],
     "names": [],
     "file": "Header.css"

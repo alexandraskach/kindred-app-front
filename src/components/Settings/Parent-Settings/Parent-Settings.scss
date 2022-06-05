@@ -2,12 +2,6 @@
 @import "../../../sass/mixins";
 @import "../../../sass/global";
 
-.navbar {
-  display: none;
-  @include mobile-only {
-    display: inline;
-  }
-}
 .container {
   &__profile {
     display: flex;

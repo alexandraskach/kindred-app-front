@@ -7,6 +7,7 @@
 body {
   font-family: "Poppins", sans-serif;
   font-size: 62.5%;
+  background-color: #fafafb;
 }
 
 input[type="email"],
@@ -15,8 +16,7 @@ input[type="number"],
 input[type="text"],
 select {
   font-family: "Poppins", sans-serif;
-  padding: 10px 18px;
-  background: #ffffff;
+  padding: 10px 40px;
   border: 1px solid #c4c4c4;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -41,6 +41,18 @@ label {
   font-style: normal;
   font-weight: 600;
   color: #161616;
+}
+
+.input-mail {
+  background-image: url("../../public/img/email.svg");
+  background-position: 9px 9px;
+  background-repeat: no-repeat;
+}
+
+.input-password {
+  background-image: url("../../public/img/lock.svg");
+  background-position: 9px 9px;
+  background-repeat: no-repeat;
 }
 
 .button-primary {
@@ -101,9 +113,23 @@ label {
   cursor: pointer;
 }
 
+.navbar {
+  display: none;
+}
+
+@media screen and (max-width: 576px) {
+  .navbar {
+    display: inline;
+  }
+}
+
 a {
   color: #79acd9;
   text-decoration: none;
+}
+
+a:hover {
+  border-bottom: 1px dotted #79acd9;
 }
 
 input[type="checkbox"] {
@@ -159,7 +185,8 @@ input[type="radio"]:hover {
 }
 
 .container {
-  margin-top: 150px;
+  margin-top: 130px;
+  margin-bottom: 30px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -186,6 +213,12 @@ h3 {
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.button-container__icon {
+  position: absolute;
+  margin-top: 1px;
+  margin-left: 5px;
 }
 
 .account-text {

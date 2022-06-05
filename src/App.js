@@ -1,8 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Connexion from "./components/Connexion/Connexion";
 import ParentSettings from "./components/Settings/Parent-Settings/Parent-Settings";
-import './App.css';
+import "./App.css";
 import "./base.scss";
+import Missions from "./components/Missions/Missions";
 // import ArrowRightIcon from "./icons/ArrowRightIcon";
 // import EditIcon from "./icons/EditIcon";
 // import EyeClosedIcon from "./icons/EyeClosedIcon";
@@ -16,6 +17,7 @@ function App() {
       <Route path="/admin/:page" element={<Admin />} />
       <Route path="/admin/study/:id" element={<AdminTest />} />
       <Route path="/study/:id" element={<Test />} /> */}
+        <Route path="/missions" element={<Missions />} />
         <Route path="/register" element={<Connexion />} />
         <Route path="/" element={<Connexion />} />
         <Route path="*" element={<Connexion fromNotFound />} />

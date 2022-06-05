@@ -68,3 +68,13 @@
     @content;
   }
 }
+@mixin mobile-only-md {
+  @media screen and (max-width: map-get($breakpoints, screen-md)) {
+    @content;
+  }
+}
+@mixin mobile-only-lg {
+  @media screen and (max-width: map-get($breakpoints, screen-lg)) {
+    @content;
+  }
+}

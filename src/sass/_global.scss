@@ -60,6 +60,19 @@ label {
   }
 }
 
+.navbar {
+  display: none;
+  @include mobile-only {
+    display: inline;
+  }
+  @include mobile-only-lg {
+    display: inline;
+  }
+  @include mobile-only-md {
+    display: inline;
+  }
+}
+
 a {
   color: $secondaryColor;
   text-decoration: none;
