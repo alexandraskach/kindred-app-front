@@ -1,0 +1,9 @@
+#Parent-settings {
+  .container {
+    &__profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

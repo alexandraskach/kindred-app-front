@@ -1,0 +1,36 @@
+@import "../../sass/variables";
+@import "../../sass/mixins";
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 485px;
+  margin-bottom: 50px;
+  margin-top: 20px;
+  @include mobile-only {
+    gap: 150px;
+  }
+  &__button {
+    background: none;
+    border: none;
+    font-family: $font-family;
+    padding: 2px 6px 2px 6px;
+    &:hover {
+      background: $grayLight;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    &_icon svg {
+      margin-bottom: -7px;
+      margin-right: 3px;
+    }
+  }
+}
+.logo {
+  font-family: $font-family-secondary;
+  font-size: 1.6rem;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}

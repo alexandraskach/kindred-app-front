@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./Ratings.scss";
-import Header from "../Header/Header";
-import Navbar from "../Navbar/Navbar";
+import Header from "../header/header";
+import Navbar from "../../components/navbar/Navbar";
 import ReactStars from "react-rating-stars-component";
 import TrashIcon from "../../icons/TrashIcon";
 
