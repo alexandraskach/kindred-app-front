@@ -5,9 +5,10 @@
   align-items: center;
   justify-content: center;
   gap: 485px;
+  margin-bottom: 50px;
   margin-top: 20px;
   @include mobile-only {
-    gap: 200px;
+    gap: 150px;
   }
   &__button {
     background: none;
@@ -28,4 +29,8 @@
 .logo {
   font-family: $font-family-secondary;
   font-size: 1.6rem;
+}
+.row {
+  display: flex;
+  flex-direction: row;
 }

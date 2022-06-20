@@ -9,12 +9,13 @@
       -ms-flex-pack: center;
           justify-content: center;
   gap: 485px;
+  margin-bottom: 50px;
   margin-top: 20px;
 }
 
 @media screen and (max-width: 576px) {
   .header {
-    gap: 200px;
+    gap: 150px;
   }
 }
 
@@ -39,5 +40,15 @@
 .logo {
   font-family: "Titan One", cursive;
   font-size: 1.6rem;
+}
+
+.row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
 }
 /*# sourceMappingURL=Header.css.map */

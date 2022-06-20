@@ -10,7 +10,7 @@ function Header(props) {
       <div>
         <span className="logo">Kindred</span>
       </div>
-      <div>
+      <div className="centered row">
         {isReturnButton ? (
           <button className="header__button">
             <span className="header__button_icon">

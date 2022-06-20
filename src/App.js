@@ -3,6 +3,7 @@ import Connexion from "./components/Connexion/Connexion";
 import ParentSettings from "./components/Settings/Parent-Settings/Parent-Settings";
 import "./App.css";
 import "./base.scss";
+import Ratings from "./components/Ratings/Ratings";
 import Missions from "./components/Missions/Missions";
 // import ArrowRightIcon from "./icons/ArrowRightIcon";
 // import EditIcon from "./icons/EditIcon";
@@ -18,6 +19,7 @@ function App() {
       <Route path="/admin/study/:id" element={<AdminTest />} />
       <Route path="/study/:id" element={<Test />} /> */}
         <Route path="/missions" element={<Missions />} />
+        <Route path="/ratings" element={<Ratings />} />
         <Route path="/register" element={<Connexion />} />
         <Route path="/" element={<Connexion />} />
         <Route path="*" element={<Connexion fromNotFound />} />
