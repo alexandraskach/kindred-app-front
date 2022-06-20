@@ -1,0 +1,24 @@
+label {
+    @extend .body-semibold;
+    display: block;
+    margin-bottom: .5rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    @extend .Input;
+}
+
+input[type="checkbox"] {
+	width: 1rem;
+	margin: 0 1rem 0 0;
+}
+
+.form-error {
+    @extend .small;
+    display: block;
+    margin-bottom: 2rem;
+    padding: 0 1.8rem;
+    color: $color-error;
+}
