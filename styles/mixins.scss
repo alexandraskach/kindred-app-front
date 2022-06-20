@@ -1,0 +1,40 @@
+@mixin buttonOutline {
+  background: #ffff;
+  box-sizing: border-box;
+  border-radius: 11px;
+  padding: 4px 30px 4px 30px;
+  border: 1px solid $color-black;
+  font-family: $font-primary;
+  width: 100%;
+}
+
+@mixin buttonDark {
+  background: $color-black;
+  box-sizing: border-box;
+  border-radius: 11px;
+  padding: 4px 30px 4px 30px;
+  border: 1px solid $color-black;
+  font-family: $font-primary;
+  //   font-style: normal;
+  //   font-weight: 600;
+  //   font-size: 1rem;
+  //   line-height: 28px;
+  width: 100%;
+  color: #ffff;
+}
+
+@mixin mobile-only {
+  @media screen and (max-width: map-get($breakpoints, screen-sm)) {
+    @content;
+  }
+}
+@mixin mobile-only-md {
+  @media screen and (max-width: map-get($breakpoints, screen-md)) {
+    @content;
+  }
+}
+@mixin mobile-only-lg {
+  @media screen and (max-width: map-get($breakpoints, screen-lg)) {
+    @content;
+  }
+}

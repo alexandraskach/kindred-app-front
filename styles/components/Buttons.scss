@@ -1,25 +1,40 @@
+@import "../mixins";
+
 .Button {
-    @extend .body-semibold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    min-width: 5.2rem;
-    height: 4.2rem;
-    padding: 1.2rem 3.2rem;
-    border: solid 1px $color-tertiary;
-    border-radius: $radius;
-    text-align: center;
-    background: none;
+  @extend .body-semibold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 5.2rem;
+  height: 4.2rem;
+  padding: 1.2rem 3.2rem;
+  border: solid 1px $color-tertiary;
+  border-radius: $radius;
+  text-align: center;
+  background: none;
 
-    &--primary {
-        color: $color-tertiary;
-        background-color: $color-primary;
-        border-color: $color-primary;
-    }
+  &--primary {
+    color: $color-tertiary;
+    background-color: $color-primary;
+    border-color: $color-primary;
+  }
 
-    &--secondary {
-        color: white;
-        background-color: $color-secondary;
+  &--secondary {
+    color: white;
+    background-color: $color-secondary;
+  }
+
+  &--outline {
+    @include buttonOutline;
+    &:hover {
+      cursor: pointer;
     }
+  }
+  &--dark {
+    @include buttonDark;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
