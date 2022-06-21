@@ -1,0 +1,15 @@
+.Card {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: $radius;
+    background-color: white;
+    box-shadow:$shadow ;
+
+    a {
+        color: $color-tertiary;
+        text-decoration: underline;
+    }
+}

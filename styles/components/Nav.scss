@@ -1,0 +1,61 @@
+.Nav {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    left: 2rem;
+    
+    &__container {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        padding: 1rem 4rem;
+        border-radius: $radius;
+        box-shadow: $shadow;
+        background-color: white;
+
+        &__item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: $color-tertiary;
+
+            &__icon {
+                display: flex;
+
+                svg {
+                    width: 2rem;
+                    height: 2rem;
+                }
+            }
+            
+            &__icon--fill svg {
+                display: none;
+                width: 2.2rem;
+                height: 2.2rem;
+            }
+
+            &__text {
+                font-size: .8rem;
+                line-height: 1rem;
+                margin: .3rem 0 0;
+            }
+
+            &--active {
+
+                span {
+                    font-weight: 600;
+                }
+
+                .Nav__container__item__icon svg {
+                    display: none;
+                }
+
+                .Nav__container__item__icon--fill svg {
+                    display: block;
+                }
+            }
+        }
+    }
+}
