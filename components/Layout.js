@@ -25,15 +25,22 @@ export function Layout({ children }) {
       {/* footer */}
       <div className="nav">
         <div className="nav__item">
-          <CheckListIcon></CheckListIcon>
+          <Link href="/">
+            <CheckListIcon></CheckListIcon>
+          </Link>
           <span className="nav__item_text">Missions</span>
         </div>
         <div className="nav__item">
-          <MenuIcon></MenuIcon>
+          <Link href="/missions">
+            <MenuIcon></MenuIcon>
+          </Link>
           <span className="nav__item_text">Dashboard</span>
         </div>
+
         <div className="nav__item">
-          <PiggyBankIcon></PiggyBankIcon>
+          <Link href="/missions">
+            <PiggyBankIcon></PiggyBankIcon>
+          </Link>
           <span className="nav__item_text">Piggybank</span>
         </div>
       </div>

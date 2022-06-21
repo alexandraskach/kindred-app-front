@@ -29,6 +29,7 @@
     @include buttonOutline;
     &:hover {
       cursor: pointer;
+      border: 1px solid $color-secondary;
     }
   }
   &--dark {
