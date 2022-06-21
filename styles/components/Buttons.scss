@@ -13,6 +13,12 @@
   border-radius: $radius;
   text-align: center;
   background: none;
+  color: $color-tertiary;
+  text-decoration: none !important;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   &--primary {
     color: $color-tertiary;
@@ -25,12 +31,22 @@
     background-color: $color-secondary;
   }
 
+  &--tertiary {
+    color: white !important;
+    background-color: $color-tertiary;
+  }
+
+  &--big {
+    height: auto;
+    padding: 2rem;
+    font-family: $font-primary;
+    font-size: 1.8rem;
+    line-height: 2.7rem;
+    font-weight: 400;
+  }
+
   &--outline {
     @include buttonOutline;
-    &:hover {
-      cursor: pointer;
-      border: 1px solid $color-secondary;
-    }
   }
   &--dark {
     @include buttonDark;
