@@ -17,8 +17,8 @@ function LockIcon() {
       <path
         d="M12 13.5L12 15.5"
         stroke="#363853"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
     </svg>
   );

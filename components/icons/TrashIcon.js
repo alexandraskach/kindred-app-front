@@ -24,8 +24,8 @@ function TrashIcon() {
       <path
         d="M10 12V16M14 12V16"
         stroke="#363853"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
     </svg>
   );
