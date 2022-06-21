@@ -12,15 +12,15 @@
       justify-content: center;
       gap: 10px;
       flex-wrap: wrap;
-      @include mobile-only {
-        flex-direction: column;
-      }
-      @include mobile-only-md {
-        flex-direction: column;
-      }
-      @include mobile-only-lg {
-        flex-direction: column;
-      }
+      // @include mobile-only {
+      //   flex-direction: column;
+      // }
+      // @include mobile-only-md {
+      //   flex-direction: column;
+      // }
+      // @include mobile-only-lg {
+      //   flex-direction: column;
+      // }
     }
 
     &__mission {

@@ -18,7 +18,6 @@ function ParentSettings() {
 
   return (
     <div>
-      <Header retour="true"></Header>
       <div className="container__profile">
         {isSettingsPage ? (
           <>
@@ -136,10 +135,6 @@ function ParentSettings() {
         ) : (
           ""
         )}
-        <div className="navbar">
-          {" "}
-          <Navbar></Navbar>
-        </div>
       </div>
     </div>
   );
