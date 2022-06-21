@@ -1,0 +1,26 @@
+.Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+
+    &__title {
+        font-family: $font-secondary;
+    }
+
+    &__button {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        color: $color-tertiary;
+
+        svg {
+            width: 1.4rem;
+            height: 1.4rem;
+        }
+    }
+  }
+  

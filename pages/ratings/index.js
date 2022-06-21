@@ -1,5 +1,6 @@
 import { Base } from "components/Base";
 import styles from "./ratings.module.scss";
+import ReactStars from "react-stars";
 
 const ratingChanged = (newRating) => {
   console.log(newRating);
@@ -14,7 +15,7 @@ export default function render() {
             <option> Katie Moum</option>
           </select>
         </div>
-        <div className="ratings-title">
+        <div className="ratings-title mb-2 mt-2">
           <h3>You can rate this down</h3>
         </div>
         <div className="centered">
@@ -24,16 +25,13 @@ export default function render() {
                 Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
               </p>
               <div className="ratings__mission_button button-container">
-                {/* <ReactStars
+                <ReactStars
+                  className="mb-2"
                   count={5}
                   onChange={ratingChanged}
                   size={24}
-                  isHalf={true}
-                  emptyIcon={<TrashIcon></TrashIcon>}
-                  halfIcon={<TrashIcon></TrashIcon>}
-                  fullIcon={<TrashIcon></TrashIcon>}
                   activeColor="#ffd700"
-                /> */}
+                />
                 <button className="Button Button--primary">Submit</button>
               </div>
             </div>
@@ -42,16 +40,13 @@ export default function render() {
                 Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
               </p>
               <div className="ratings__mission_button button-container">
-                {/* <ReactStars
+                <ReactStars
+                  className="mb-2"
                   count={5}
                   onChange={ratingChanged}
                   size={24}
-                  isHalf={true}
-                  emptyIcon={<TrashIcon></TrashIcon>}
-                  halfIcon={<TrashIcon></TrashIcon>}
-                  fullIcon={<TrashIcon></TrashIcon>}
                   activeColor="#ffd700"
-                /> */}
+                />
                 <button className="Button Button--primary">Submit</button>
               </div>
             </div>
@@ -60,16 +55,13 @@ export default function render() {
                 Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
               </p>
               <div className="ratings__mission_button button-container">
-                {/* <ReactStars
+                <ReactStars
+                  className="mb-2"
                   count={5}
                   onChange={ratingChanged}
                   size={24}
-                  isHalf={true}
-                  emptyIcon={""}
-                  halfIcon={""}
-                  fullIcon={""}
                   activeColor="#ffd700"
-                /> */}
+                />
                 <button className="Button Button--primary">Submit</button>
               </div>
             </div>
@@ -87,6 +79,9 @@ export default function render() {
               </p>
               <div className="ratings__mission_button button-container">
                 <p>Your rating</p>
+                <span data-index="0" data-forhalf="★">
+                  ★
+                </span>
                 <p>Kid's rating</p>
               </div>
             </div>
