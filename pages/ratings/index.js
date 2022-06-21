@@ -1,5 +1,4 @@
 import { Base } from "components/Base";
-import Navbar from "components/navbar/Navbar";
 import styles from "./ratings.module.scss";
 
 const ratingChanged = (newRating) => {
@@ -10,7 +9,6 @@ export default function render() {
   return (
     <Base>
       <div id={styles.Ratings} className="mt-8">
-        {/* <Header retour="true"></Header> */}
         <div className="select-container">
           <select className="select">
             <option> Katie Moum</option>
@@ -146,9 +144,6 @@ export default function render() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="navbar">
-          <Navbar></Navbar>
         </div>
       </div>
     </Base>
