@@ -151,8 +151,8 @@ export default function render() {
                     <Field type="radio" name="category" value="One" required />
                     Item 2
                   </p>
-                  {errors.picked && touched.picked && (
-                    <span className="form-error">{errors.picked}</span>
+                  {errors.category && touched.category && (
+                    <span className="form-error">{errors.category}</span>
                   )}
 
                   <button
