@@ -49,7 +49,7 @@ export default function render() {
     <Base>
       <div id={styles.Missions} className="mt-8">
         <div className="wrapper">
-          <h2>Add mission</h2>
+          <h2>Edit mission</h2>
           <Formik
             initialValues={{
               title: "",

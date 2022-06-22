@@ -1,4 +1,5 @@
 import { Base } from "components/Base";
+import EditIcon from "components/icons/EditIcon";
 import PlusIcon from "components/icons/PlusIcon";
 import RefreshIcon from "components/icons/RefreshIcon";
 import Link from "next/link";
@@ -32,6 +33,11 @@ export default function render() {
                 <span className="ml-2 mt-1">
                   <RefreshIcon></RefreshIcon>
                 </span>
+                <Link href="/missions/edit-mission">
+                  <span className="ml-2 mt-1">
+                    <EditIcon></EditIcon>
+                  </span>
+                </Link>
               </p>
               <p className="mission__date small">
                 wednesday, thursday until january 02 2023
@@ -50,6 +56,11 @@ export default function render() {
                 <span className="ml-2 mt-1">
                   <RefreshIcon></RefreshIcon>
                 </span>
+                <Link href="/missions/edit-mission">
+                  <span className="ml-2 mt-1">
+                    <EditIcon></EditIcon>
+                  </span>
+                </Link>
               </p>
               <p className="mission__date small">
                 wednesday, thursday until january 02 2023
@@ -68,6 +79,11 @@ export default function render() {
                 <span className="ml-2 mt-1">
                   <RefreshIcon></RefreshIcon>
                 </span>
+                <Link href="/missions/edit-mission">
+                  <span className="ml-2 mt-1">
+                    <EditIcon></EditIcon>
+                  </span>
+                </Link>
               </p>
               <p className="mission__date small">
                 wednesday, thursday until january 02 2023
