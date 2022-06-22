@@ -100,6 +100,9 @@ export default function render() {
                     className={kinsClassName}
                     name="kins"
                     placeholder="200"
+                    type="number"
+                    max="1000"
+                    min="1"
                     required
                   />
                   {errors.kins && touched.kins && (

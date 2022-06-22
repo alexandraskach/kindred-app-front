@@ -59,7 +59,9 @@ export default function render() {
                 <Field
                   id="form-points"
                   className={pointsClassName}
-                  type="text"
+                  type="number"
+                  max="1000"
+                  min="1"
                   name="points"
                   placeholder="Enter your new points"
                   required

@@ -2,7 +2,7 @@ import { Base } from "components/Base";
 import DatePickerField from "components/Datepicker";
 import PlusIcon from "components/icons/PlusIcon";
 import RefreshIcon from "components/icons/RefreshIcon";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, validateYupSchema } from "formik";
 import styles from "./missions.module.scss";
 
 export async function onSubmit(data) {
@@ -27,7 +27,9 @@ export function validation(values) {
   if (values.title == "") errors.title = "Title is required";
 
   // Kins
-  if (values.kins == "") errors.kins = "Kins are required";
+  if (values.kins == "") {
+    errors.kins = "Kins are required";
+  }
 
   // startWeek
   if (values.startWeek == "") errors.startWeek = "Start week is required";
@@ -99,6 +101,9 @@ export default function render() {
                     id="form-kins"
                     className={kinsClassName}
                     name="kins"
+                    type="number"
+                    max="1000"
+                    min="1"
                     placeholder="200"
                     required
                   />
