@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Base } from "components/Base";
+import SelectChild from "components/SelectChild";
 
 export async function getServerSideProps() {
 	const childs = [
@@ -15,6 +16,8 @@ export async function getServerSideProps() {
 export default function render({ childs }) {
 	return (
 		<Base>
+			<SelectChild/>
+
 			<h2 className="mb-3">Dashboard</h2>
 			<button className="Button Button--big Button--primary mb-2">Rate new missions</button>
 

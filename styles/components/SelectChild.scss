@@ -1,0 +1,59 @@
+.SelectChild {
+    @extend .Card;
+    row-gap: 0;
+
+    &__current {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+
+        &__informations {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            & span {
+                @extend .small;
+                margin: 0;
+            }
+            
+            & img {
+                width: 40px;
+                height: 40px;
+                border-radius: $radius;
+                object-fit: cover;
+            }
+        }
+
+        & > svg {
+            transform: rotate(180deg);
+            transition: transform .3s ease;
+        }
+    }
+
+    &__others {
+        height: 0px;
+        overflow: hidden;
+        transition: height .3s ease;
+
+        &__container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 2rem;
+    
+            &__item {
+                @extend .SelectChild__current__informations;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &.show {
+
+        .SelectChild__current svg {
+            transform: rotate(0deg);
+        }
+    }
+}

@@ -1,6 +1,8 @@
 import { Base } from "components/Base";
+import EditIcon from "components/icons/EditIcon";
 import PlusIcon from "components/icons/PlusIcon";
 import RefreshIcon from "components/icons/RefreshIcon";
+import Link from "next/link";
 import styles from "./missions.module.scss";
 
 export default function render() {
@@ -16,19 +18,26 @@ export default function render() {
           </div>
           <div className="missions-container">
             <h3>Missions</h3>
-            <button className="Button Button--outline">
-              {" "}
-              Add mission{" "}
-              <span className="ml-2">
-                <PlusIcon></PlusIcon>
-              </span>
-            </button>
+            <Link href="/missions/add-mission">
+              <button className="Button Button--outline">
+                {" "}
+                Add mission{" "}
+                <span className="ml-2">
+                  <PlusIcon></PlusIcon>
+                </span>
+              </button>
+            </Link>
             <div className="card mb-2">
               <p className="mission__title body-semibold">
                 Do the dishes on Thursday evenings
                 <span className="ml-2 mt-1">
                   <RefreshIcon></RefreshIcon>
                 </span>
+                <Link href="/missions/edit-mission">
+                  <span className="ml-2 mt-1">
+                    <EditIcon></EditIcon>
+                  </span>
+                </Link>
               </p>
               <p className="mission__date small">
                 wednesday, thursday until january 02 2023
@@ -47,6 +56,11 @@ export default function render() {
                 <span className="ml-2 mt-1">
                   <RefreshIcon></RefreshIcon>
                 </span>
+                <Link href="/missions/edit-mission">
+                  <span className="ml-2 mt-1">
+                    <EditIcon></EditIcon>
+                  </span>
+                </Link>
               </p>
               <p className="mission__date small">
                 wednesday, thursday until january 02 2023
@@ -65,6 +79,11 @@ export default function render() {
                 <span className="ml-2 mt-1">
                   <RefreshIcon></RefreshIcon>
                 </span>
+                <Link href="/missions/edit-mission">
+                  <span className="ml-2 mt-1">
+                    <EditIcon></EditIcon>
+                  </span>
+                </Link>
               </p>
               <p className="mission__date small">
                 wednesday, thursday until january 02 2023
