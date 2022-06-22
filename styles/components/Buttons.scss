@@ -30,12 +30,12 @@
     color: white;
     background-color: $color-secondary;
   }
-  
+
   &--tertiary {
     color: white !important;
     background-color: $color-tertiary;
   }
-  
+
   &--big {
     height: auto;
     padding: 2rem;
@@ -51,5 +51,12 @@
   }
   &--dark {
     @include buttonDark;
+    &:hover {
+      transition: 0.2s;
+      cursor: pointer;
+      border: 1px solid $color-tertiary;
+      background-color: $color-lightgray;
+      color: $color-tertiary;
+    }
   }
 }
