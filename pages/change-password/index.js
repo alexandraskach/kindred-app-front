@@ -3,20 +3,20 @@ import styles from "./change-password.module.scss";
 import { Formik, Form, Field } from "formik";
 
 export async function onSubmit(data) {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/login_check",
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }
-  );
-  const json = await response.json();
-  localStorage.JWT = json.token;
-  console.log(json.token);
+  // const response = await fetch(
+  //   process.env.NEXT_PUBLIC_API_URL + "/login_check",
+  //   {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   }
+  // );
+  // const json = await response.json();
+  // localStorage.JWT = json.token;
+  // console.log(json.token);
 }
 
 export function validation(values) {
@@ -26,7 +26,7 @@ export function validation(values) {
   if (values.password == "") errors.password = "Required";
 
   // confirm password
-  if (values.confirm_password == "") errors.password = "Required";
+  if (values.confirm__password == "") errors.confirm__password = "Required";
 
   return errors;
 }
@@ -76,8 +76,8 @@ export default function render() {
                   <Field
                     id="form-confirm-password"
                     className={confirmPasswordClassName}
-                    type="confirm-password"
-                    name="confirm-password"
+                    type="password"
+                    name="confirm__password"
                     placeholder="Confirm your new password"
                     required
                   />

@@ -1,5 +1,35 @@
 import { Base } from "components/Base";
 import styles from "./edit-contract.module.scss";
+import { Form, Formik, Field } from "formik";
+
+export async function onSubmit(data) {
+  //   const response = await fetch(
+  //     process.env.NEXT_PUBLIC_API_URL + "/login_check",
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(data),
+  //     }
+  //   );
+  //   const json = await response.json();
+  //   localStorage.JWT = json.token;
+  //   console.log(json.token);
+}
+
+export function validation(values) {
+  const errors = {};
+
+  // points
+  if (values.points == "") errors.points = "Required";
+
+  // description
+  if (values.description == "") errors.description = "Required";
+
+  return errors;
+}
 
 export default function render() {
   const data = {
@@ -39,8 +69,7 @@ export default function render() {
   return (
     <Base>
       <div id={styles.EditContract}>
-        <h1>Edit contract</h1>
-        <div>
+        {/* <div>
           <div className="body-semibold">Child</div>
           <select>
             {data.children.map((child) => (
@@ -49,27 +78,77 @@ export default function render() {
               </option>
             ))}
           </select>
-        </div>
-        <div>
-          <div className="body-semibold">Value of each point</div>
-          <input value={data.contract_value + "€"} />
-        </div>
-        <div>
-          <div className="body-semibold">Description</div>
-          <input value={data.contract_description} />
-        </div>
-        <div>
-          <input
-            type="button"
-            className="Button Button--tertiary"
-            value="Save modification"
-          />
-          <input
-            type="button"
-            className="Button Button-tertiary"
-            value="Save as draft"
-          />
-        </div>
+        </div> */}
+        <Formik
+          initialValues={{ points: "", description: "" }}
+          onSubmit={(data) => onSubmit(data)}
+          validate={validation}
+        >
+          {({ errors, touched, validateOnChange }) => {
+            let childClassName = "Input Input--select mb-1",
+              pointsValueClassName = "Input Input--text mb-1",
+              descriptionClassName = "Input Input--text mb-1";
+
+            childClassName += errors.child && touched.child ? " error" : "";
+            pointsValueClassName +=
+              errors.points__value && touched.points__value ? " error" : "";
+            descriptionClassName +=
+              errors.description && touched.description ? " error" : "";
+
+            return (
+              <Form className="mt-5 mb-2">
+                {/* Child */}
+                <label htmlFor="form-child">Child</label>
+                <Field
+                  id="form-child"
+                  className={childClassName}
+                  type="select"
+                  name="child"
+                  required
+                />
+                {errors.child && touched.child && (
+                  <span className="form-error">{errors.child}</span>
+                )}
+
+                {/* points value */}
+                <label htmlFor="form-points-value">Value of each point</label>
+                <Field
+                  id="form-points-value"
+                  className={pointsValueClassName}
+                  type="text"
+                  name="points-value"
+                  placeholder="Enter points value"
+                  required
+                />
+                {errors.points__value && touched.points__value && (
+                  <span className="form-error">{errors.points__value}</span>
+                )}
+
+                {/* description */}
+                <label htmlFor="form-description">Description</label>
+                <Field
+                  as="textarea"
+                  id="form-description"
+                  className={descriptionClassName}
+                  type="text"
+                  name="description"
+                  placeholder="Enter your new description"
+                  required
+                />
+                {errors.description && touched.description && (
+                  <span className="form-error">{errors.description}</span>
+                )}
+
+                <button className="Button Button--tertiary" type="submit">
+                  Save modification
+                </button>
+                <button className="Button Button-tertiary" type="submit">
+                  Save as draft
+                </button>
+              </Form>
+            );
+          }}
+        </Formik>
       </div>
     </Base>
   );
