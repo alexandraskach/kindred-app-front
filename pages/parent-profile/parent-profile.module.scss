@@ -1,0 +1,155 @@
+#ParentProfile {
+  // .container {
+  //   align-items: center;
+  //   justify-content: center;
+  //   gap: 485px;
+  //   margin-top: 20px;
+  //   &__profile {
+  //     display: flex;
+  //     flex-direction: column;
+  //     align-items: center;
+  //   }
+  // }
+
+  .profile__picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background: grey;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 52px;
+    font-weight: 500;
+    line-height: 100px;
+    color: white;
+    margin: auto;
+  }
+
+  .profile__name {
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #000000;
+    margin-top: 10px;
+  }
+
+  .profile__status {
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #000000;
+    text-align: center;
+  }
+
+  .profile__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .profile__title {
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #000000;
+    width: 270px;
+  }
+
+  .profile__add__button {
+    width: 20px;
+    height: 20px;
+    background: #c4c4c4;
+    border-radius: 100px;
+    color: white;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    margin: auto;
+    text-align: center;
+    right: 0;
+    &:hover {
+      background: #000a27;
+      cursor: pointer;
+    }
+  }
+
+  .profile__child {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .profile__child__picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 11px;
+    background: grey;
+    flex: none;
+  }
+
+  .profile__child__name {
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+  }
+
+  .profile__informations {
+    width: 185px;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .profile__child__adding__date,
+  .profile__contract__date {
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #c4c4c4;
+  }
+
+  .profile__contract__status {
+    width: 10px;
+    height: 10px;
+    top: 20px;
+    // left: 280px;
+    border-radius: 100px;
+    background: #68dc81;
+  }
+
+  .button__logout {
+    width: 290px;
+    height: 40px;
+    background: white;
+    cursor: pointer;
+    border: #000000 solid 1.5px;
+    border-radius: 11px;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  .profile__change__password > a {
+    color: #000000;
+  }
+
+  .profile__delete__account > a {
+    color: #ff0000;
+  }
+}

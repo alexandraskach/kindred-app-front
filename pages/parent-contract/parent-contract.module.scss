@@ -1,0 +1,103 @@
+#ParentContract {
+  .switch {
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 20px;
+    cursor: pointer;
+    overflow: hidden;
+    top: 10px;
+  }
+
+  .switch input {
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    width: 0;
+    height: 0;
+  }
+
+  .switch input + span {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #c4c4c4;
+    border-radius: 10px;
+  }
+
+  .switch input:checked + span {
+    background: #000000;
+  }
+
+  .switch input + span:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: all 0.5s;
+  }
+
+  .switch input:checked + span:before {
+    left: 22px;
+  }
+
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .status__signed {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .child {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .child__informations {
+    width: 185px;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .child__picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 11px;
+    background: grey;
+    flex: none;
+  }
+
+  .profile__contract__status {
+    width: 10px;
+    height: 10px;
+    top: 20px;
+    // left: 280px;
+    border-radius: 100px;
+    background: #68dc81;
+  }
+
+  .contract_dates {
+    display: flex;
+    flex-direction: column;
+    color: #c4c4c4;
+  }
+}
