@@ -1,6 +1,5 @@
 import { Base } from "components/Base";
 import { Form, Formik, Field } from "formik";
-import styles from "./add-reward.module.scss";
 
 export async function onSubmit(data) {
   //   const response = await fetch(
@@ -34,7 +33,7 @@ export function validation(values) {
 export default function render() {
   return (
     <Base>
-      <div id={styles.EditContract}>
+      <div>
         <h1>Add reward</h1>
         <Formik
           initialValues={{ points: "", description: "" }}

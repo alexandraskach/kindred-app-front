@@ -1,6 +1,5 @@
 import { Base } from "components/Base";
 import { Form, Formik, Field } from "formik";
-import styles from "./edit-reward.module.scss";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
 
@@ -47,7 +46,7 @@ export function validation(values) {
 export default function render() {
   return (
     <Base>
-      <div id={styles.EditContract}>
+      <div>
         <h1>Edit reward</h1>
         <Formik
           initialValues={{ points: "", description: "" }}
