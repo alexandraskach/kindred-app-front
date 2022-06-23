@@ -2,6 +2,19 @@ import { Base } from "components/Base";
 import PlusIcon from "components/icons/PlusIcon";
 import Link from "next/link";
 import styles from "./rewards.module.scss";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionConfig } from "logic/session";
+
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps(context) {
+    console.log("user", context.req.session.user);
+    if (!context.req.session.user) {
+      return { redirect: { destination: "/login" } };
+    }
+    return { props: context.req.session.user };
+  },
+  sessionConfig
+);
 
 export default function render() {
   return (

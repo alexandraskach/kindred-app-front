@@ -4,8 +4,36 @@ import PlusIcon from "components/icons/PlusIcon";
 import RefreshIcon from "components/icons/RefreshIcon";
 import Link from "next/link";
 import styles from "./missions.module.scss";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionConfig } from "logic/session";
+
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps(context) {
+    console.log("user", context.req.session.user);
+    if (!context.req.session.user) {
+      return { redirect: { destination: "/login" } };
+    }
+    return { props: context.req.session.user };
+  },
+  sessionConfig
+);
 
 export default function render() {
+  const data = {
+    id: 1,
+    description: "description de la mission",
+    points: 300,
+    isRepeated: "",
+    createdAt: "",
+    updatedAt: "",
+    category: "",
+    week: "",
+    user: "",
+    parentNotation: "",
+    childNotation: "",
+    userContract: "",
+  };
+
   return (
     <Base>
       <div id={styles.Missions} className="mt-8">

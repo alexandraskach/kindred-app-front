@@ -1,10 +1,23 @@
 import { Base } from "components/Base";
 import styles from "./ratings.module.scss";
 import ReactStars from "react-stars";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionConfig } from "logic/session";
 
 const ratingChanged = (newRating) => {
   console.log(newRating);
 };
+
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps(context) {
+    console.log("user", context.req.session.user);
+    if (!context.req.session.user) {
+      return { redirect: { destination: "/login" } };
+    }
+    return { props: context.req.session.user };
+  },
+  sessionConfig
+);
 
 export default function render() {
   return (

@@ -1,6 +1,8 @@
 import { Base } from "components/Base";
 import { useState } from "react";
 import styles from "./parent-contract.module.scss";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionConfig } from "logic/session";
 
 const data = {
   first_name: "Katie",
@@ -13,6 +15,17 @@ const data = {
   contract_sign_date: "17/12/2019",
   contract_expire_date: "15/12/2022",
 };
+
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps(context) {
+    console.log("user", context.req.session.user);
+    if (!context.req.session.user) {
+      return { redirect: { destination: "/login" } };
+    }
+    return { props: context.req.session.user };
+  },
+  sessionConfig
+);
 
 export default function render() {
   const [toggle, setToggle] = useState(false);

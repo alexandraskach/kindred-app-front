@@ -1,6 +1,19 @@
 import { Base } from "components/Base";
 import styles from "./edit-contract.module.scss";
 import { Form, Formik, Field } from "formik";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionConfig } from "logic/session";
+
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps(context) {
+    console.log("user", context.req.session.user);
+    if (!context.req.session.user) {
+      return { redirect: { destination: "/login" } };
+    }
+    return { props: context.req.session.user };
+  },
+  sessionConfig
+);
 
 export async function onSubmit(data) {
   //   const response = await fetch(
