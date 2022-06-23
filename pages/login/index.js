@@ -45,7 +45,10 @@ export async function onSubmit(data, router) {
   	const json = await response.json()
 	console.log(json)
 	
-	// router.push('/')
+	if (json.user) {
+		// router.replace(router.asPath) <-- refresh page with new session data
+		router.push('/')
+	}
 }
 
 
@@ -69,7 +72,7 @@ export default function render(props) {
 
 	return (
 		<div id={styles.Login} className='mt-8'>
-			<p>token : {props.token}</p>
+			{/* <p>token : {props.token}</p> */}
 
 			<div className='d-flex flex-column align-items-center'>
 				<p className='big mb-3'>Kindred</p>
