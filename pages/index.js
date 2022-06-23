@@ -2,16 +2,17 @@ import { useState } from "react";
 import Link from "next/link";
 import { Base } from "components/Base";
 import SelectChild from "components/SelectChild";
+import redirectToAuh from "components/redirectToAuh";
 
-export async function getServerSideProps() {
-	const childs = [
-		{firstname: 'Lorem', lastname: 'ipsum', picture: '#0'},
-	]
+// export async function getServerSideProps() {
+// 	const childs = [
+// 		{firstname: 'Lorem', lastname: 'ipsum', picture: '#0'},
+// 	]
 
-	return {
-		props: { childs }
-	}
-}
+// 	return {
+// 		props: { childs }
+// 	}
+// }
 
 export default function render({ childs }) {
 	return (

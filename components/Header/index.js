@@ -17,7 +17,7 @@ export default function Header() {
       )}
 
       {router.pathname == "/" && (
-        <a className="Header__button" href="#0">
+        <a className="Header__button" href="/settings">
           <SettingsIcon />
           Settings
         </a>

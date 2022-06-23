@@ -1,0 +1,21 @@
+.Picture {
+    width: 4rem;
+    height: 4rem;
+    border-radius: $radius;
+    object-fit: cover;
+
+    &--big {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10rem;
+        height: 10rem;
+        font-size: 5.2rem;
+        font-weight: 500;
+        line-height: 10rem;
+        object-fit: cover;
+        color: white;
+        background-color: $color-secondary;
+        border-radius: 100%;
+    }
+}
