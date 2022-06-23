@@ -9,14 +9,13 @@ import PiggyBankFillIcon from "components/icons/PiggyBankFillIcon";
 
 export default function Nav() {
   const router = useRouter();
-  console.log(router.pathname);
 
   return (
     // <nav className={styles.Nav}>
     <nav className="Nav">
       <div className="Nav__container">
         <a
-          href="#0"
+          href="/missions"
           className={
             "Nav__container__item " +
             (router.pathname == "/missions"
@@ -33,7 +32,7 @@ export default function Nav() {
           <span className="Nav__container__item__text">Missions</span>
         </a>
         <a
-          href="#0"
+          href="/"
           className={
             "Nav__container__item " +
             (router.pathname == "/" ? "Nav__container__item--active" : "")
@@ -48,7 +47,7 @@ export default function Nav() {
           <span className="Nav__container__item__text">Dashboard</span>
         </a>
         <a
-          href="#0"
+          href="/piggy-bank"
           className={
             "Nav__container__item " +
             (router.pathname == "/piggy-bank"

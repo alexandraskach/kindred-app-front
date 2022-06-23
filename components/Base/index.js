@@ -1,26 +1,21 @@
-// import Link from "next/link";
+// import redirectToAuh from "components/redirectToAuh"
+// import { useRouter } from 'next/router'
 
-// export function getJWT() {
-// 	return typeof window !== 'undefined' && localStorage.JWT ? localStorage.JWT : null
-// }
+// import { withIronSessionSsr } from "iron-session/next"
+// import { sessionConfig } from "logic/session";
 
-// export async function getServerSideProps(context) {
-// 	const JWT = getJWT()
-	
-// 	if (JWT == null) {
-// 		return {
-// 			redirect: {
-// 				destination: "/login",
-// 				permanent: false
-// 			}
+// export const getServerSideProps = withIronSessionSsr(
+// 	async function getServerSideProps(context) {
+// 		if (!context.req.session.token) {
+// 			return { redirect: { destination: "/login" } };
+// 			// return { props: { token: JSON.stringify(context.req.session) } }
 // 		}
-// 	}
-
-// 	return {
-// 		props: JWT
-// 	}
-// }
+// 		return { props: {} }
+// 	},
+// 	sessionConfig
+// )
 
 export function Base({ children }) {
+	// redirectToAuh()
 	return <main>{children}</main>
 }
