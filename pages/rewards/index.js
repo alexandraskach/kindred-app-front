@@ -9,45 +9,35 @@ import { useEffect, useState } from "react";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
+    
     if (!context.req.session.user) {
-      return { redirect: { destination: "/login" } };
+      return { redirect: { destination: "/login" } }
     }
-    return { props: context.req.session };
+
+    let props = context.req.session,
+        responseChilds = await fetch( process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`, {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + props.token,
+          }
+        } ),
+        childs = await responseChilds.json()
+
+    props.childs = childs
+
+    return { props }
   },
   sessionConfig
 );
 
 export default function render(props) {
-  // const [isLoading, setIsLoading] = useState(false);
-  const childs = [];
-  useEffect(() => {
-    // setIsLoading(true);
-
-    fetch(
-      process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + props.token,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("data", data);
-        childs.push(data);
-      });
-
-    console.log("childs", childs);
-  });
-
   return (
     <Base>
       <div id={styles.Rewards} className="mt-8 wrapper">
         <div className="select-container">
-          <SelectChild childs={childs}></SelectChild>
+          <SelectChild childs={props.childs}></SelectChild>
         </div>
         <h2 className="mt-2">Rewards</h2>
         <Link href="/rewards/add-reward">
