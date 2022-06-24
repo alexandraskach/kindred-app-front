@@ -1,4 +1,16 @@
 import ChevronTop from "components/icons/ChevronTop";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionConfig } from "logic/session";
+
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps(context) {
+    if (!context.req.session.user) {
+      return { redirect: { destination: "/login" } };
+    }
+    return { props: context.req.session };
+  },
+  sessionConfig
+);
 
 export function toggle(select) {
   const others = select.querySelector(".SelectChild__others");
@@ -12,7 +24,8 @@ export function toggle(select) {
 }
 
 export default function SelectChild(childs) {
-  console.log("childs", childs);
+  console.log("childs SelectChild", childs);
+  const children = [{ id: 1, firstName: "ff", lastName: "toto" }];
   return (
     <div className="SelectChild">
       <div
@@ -27,14 +40,23 @@ export default function SelectChild(childs) {
       </div>
       <div className="SelectChild__others">
         <div className="SelectChild__others__container">
-          <div className="SelectChild__others__container__item">
-            <img src="" />
-            <span>Lorem ipsum</span>
-          </div>
-          <div className="SelectChild__others__container__item">
-            <img src="" />
-            <span>Lorem ipsum</span>
-          </div>
+          {childs.childs.map((child) => (
+            <div
+              key={child.id}
+              className="SelectChild__others__container__item"
+            >
+              <img src="" />
+              <span>
+                {child.firstName} {child.lastName}
+              </span>
+            </div>
+          ))}
+
+          {/*         
+              <div className="SelectChild__others__container__item">
+               <img src="" />
+               <span>Lorem ipsum</span>
+             </div> */}
         </div>
       </div>
     </div>

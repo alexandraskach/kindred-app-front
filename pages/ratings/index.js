@@ -3,6 +3,7 @@ import styles from "./ratings.module.scss";
 import ReactStars from "react-stars";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
+import SelectChild from "components/SelectChild";
 
 const ratingChanged = (newRating) => {
   console.log(newRating);
@@ -19,14 +20,13 @@ export const getServerSideProps = withIronSessionSsr(
   sessionConfig
 );
 
-export default function render() {
+export default function render(props) {
+  const router = useRouter();
   return (
     <Base>
       <div id={styles.Ratings} className="mt-8">
         <div className="select-container">
-          <select className="select">
-            <option> Katie Moum</option>
-          </select>
+          <SelectChild childs={props.childs}></SelectChild>
         </div>
         <div className="ratings-title mb-2 mt-2">
           <h3>You can rate this down</h3>
