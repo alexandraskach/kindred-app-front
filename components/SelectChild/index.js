@@ -1,6 +1,7 @@
 import ChevronTop from "components/icons/ChevronTop";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
+import Router from "next/router";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
@@ -23,9 +24,27 @@ export function toggle(select) {
     : "0px";
 }
 
+export async function handleClick(childId) {
+  console.log("childId", childId);
+  let response = await fetch("/api/select-child", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: childId,
+  });
+  const json = await response.json().then(() => {
+    // const router = useRouter();
+    // router.reload(window.location.pathname);
+    Router.reload();
+  });
+  console.log("response /api/select-child", json);
+}
+
 export default function SelectChild(childs) {
   console.log("childs SelectChild", childs);
-  const children = [{ id: 1, firstName: "ff", lastName: "toto" }];
+
   return (
     <div className="SelectChild">
       <div
@@ -41,6 +60,7 @@ export default function SelectChild(childs) {
         <div className="SelectChild__others__container">
           {childs.childs.map((child) => (
             <div
+              onClick={(e) => handleClick(child.id)}
               key={child.id}
               className="SelectChild__others__container__item"
             >

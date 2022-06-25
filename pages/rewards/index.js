@@ -6,6 +6,8 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
 import SelectChild from "components/SelectChild";
 import { useEffect, useState } from "react";
+import EditIcon from "components/icons/EditIcon";
+import TrashIcon from "components/icons/TrashIcon";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
@@ -13,20 +15,24 @@ export const getServerSideProps = withIronSessionSsr(
       return { redirect: { destination: "/login" } };
     }
 
-    let props = context.req.session,
-      responseChilds = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + props.token,
-          },
-        }
-      ),
+    let props = context.req.session;
+    let responseChilds = await fetch(
+      process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + props.token,
+        },
+      }
+    );
+    let childs = await responseChilds.json();
+    let responseRewards;
+    if (context.req.session.idChildSelected) {
       responseRewards = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/rewards`,
+        process.env.NEXT_PUBLIC_API_URL +
+          `/api/users/${context.req.session.idChildSelected}/rewards`,
         {
           method: "GET",
           headers: {
@@ -35,10 +41,9 @@ export const getServerSideProps = withIronSessionSsr(
             Authorization: "Bearer " + props.token,
           },
         }
-      ),
-      rewards = await responseRewards.json(),
-      childs = await responseChilds.json();
-
+      );
+    }
+    let rewards = await responseRewards.json();
     props.rewards = rewards;
     props.childs = childs;
 
@@ -48,7 +53,7 @@ export const getServerSideProps = withIronSessionSsr(
 );
 
 export default function render(props) {
-  console.log("rewards", props.rewards);
+  console.log("props", props);
   return (
     <Base>
       <div id={styles.Rewards} className="mt-8 wrapper">
@@ -67,7 +72,17 @@ export default function render(props) {
         </Link>
         {props.rewards.map((reward) => (
           <div key={reward.id} className="Card">
-            <h2>{reward.points} points</h2>
+            <h2>
+              {reward.points} points{" "}
+              <Link href="/rewards/edit-reward">
+                <span style={{ float: "right" }}>
+                  <EditIcon></EditIcon>
+                </span>
+              </Link>
+              <span style={{ float: "right" }}>
+                <TrashIcon></TrashIcon>
+              </span>
+            </h2>
             <p>{reward.description}</p>
           </div>
         ))}
