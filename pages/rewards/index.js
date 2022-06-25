@@ -9,30 +9,46 @@ import { useEffect, useState } from "react";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
-    
     if (!context.req.session.user) {
-      return { redirect: { destination: "/login" } }
+      return { redirect: { destination: "/login" } };
     }
 
     let props = context.req.session,
-        responseChilds = await fetch( process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`, {
+      responseChilds = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`,
+        {
           method: "GET",
           headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + props.token,
-          }
-        } ),
-        childs = await responseChilds.json()
+            Authorization: "Bearer " + props.token,
+          },
+        }
+      ),
+      responseRewards = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/rewards`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + props.token,
+          },
+        }
+      ),
+      rewards = await responseRewards.json(),
+      childs = await responseChilds.json();
 
-    props.childs = childs
+    props.rewards = rewards;
+    props.childs = childs;
 
-    return { props }
+    return { props };
   },
   sessionConfig
 );
 
 export default function render(props) {
+  console.log("rewards", props.rewards);
   return (
     <Base>
       <div id={styles.Rewards} className="mt-8 wrapper">
@@ -49,22 +65,12 @@ export default function render(props) {
             </span>
           </button>
         </Link>
-        <div className="Card">
-          <h2>120 points</h2>
-          <p>
-            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-            posuere cubilia curae; Ut tellus tortor, tristique quis velit at,
-            semper laoreet ex.
-          </p>
-        </div>
-        <div className="Card">
-          <h2>120 points</h2>
-          <p>
-            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-            posuere cubilia curae; Ut tellus tortor, tristique quis velit at,
-            semper laoreet ex.
-          </p>
-        </div>
+        {props.rewards.map((reward) => (
+          <div key={reward.id} className="Card">
+            <h2>{reward.points} points</h2>
+            <p>{reward.description}</p>
+          </div>
+        ))}
       </div>
     </Base>
   );

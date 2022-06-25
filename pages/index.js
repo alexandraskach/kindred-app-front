@@ -25,7 +25,23 @@ export const getServerSideProps = withIronSessionSsr(
     if (!context.req.session.user) {
       return { redirect: { destination: "/login" } };
     }
-    return { props: context.req.session.user };
+    let props = context.req.session,
+      responseChilds = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + props.token,
+          },
+        }
+      ),
+      childs = await responseChilds.json();
+
+    props.childs = childs;
+
+    return { props };
   },
   sessionConfig
 );

@@ -33,8 +33,7 @@ export default function SelectChild(childs) {
         onClick={(e) => toggle(e.target.parentNode)}
       >
         <div className="SelectChild__current__informations">
-          <img src="" />
-          <span>Lorem ipsum</span>
+          <span className="mt-1 mb-1 ml-1">Select child</span>
         </div>
         <ChevronTop />
       </div>

@@ -60,7 +60,7 @@ export function validation(values) {
 }
 
 export default function render() {
-  redirectToAuth();
+  // redirectToAuth();
   return (
     <Base>
       <div className="mt-8">

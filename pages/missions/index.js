@@ -6,19 +6,36 @@ import Link from "next/link";
 import styles from "./missions.module.scss";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
+import SelectChild from "components/SelectChild";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
-    console.log("user", context.req.session.user);
     if (!context.req.session.user) {
       return { redirect: { destination: "/login" } };
     }
-    return { props: context.req.session.user };
+
+    let props = context.req.session,
+      responseChilds = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + props.token,
+          },
+        }
+      ),
+      childs = await responseChilds.json();
+
+    props.childs = childs;
+
+    return { props };
   },
   sessionConfig
 );
 
-export default function render() {
+export default function render(props) {
   const data = {
     id: 1,
     description: "description de la mission",
@@ -39,10 +56,7 @@ export default function render() {
       <div id={styles.Missions} className="mt-8">
         <div className="wrapper">
           <div className="select-container mb-2">
-            <select className="select">
-              <option> Katie Moum</option>
-              <option> Katie 2</option>
-            </select>
+            <SelectChild childs={props.childs}></SelectChild>
           </div>
           <div className="missions-container">
             <h3>Missions</h3>

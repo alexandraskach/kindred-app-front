@@ -1,8 +1,38 @@
 import { Base } from "components/Base";
 import redirectToAuh from "components/redirectToAuh";
 import styles from "./parent-profile.module.scss";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionConfig } from "logic/session";
+import Link from "next/link";
 
-export default function render() {
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps(context) {
+    console.log("user", context.req.session.user);
+    if (!context.req.session.user) {
+      return { redirect: { destination: "/login" } };
+    }
+    let props = context.req.session,
+      responseChilds = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + props.token,
+          },
+        }
+      ),
+      childs = await responseChilds.json();
+
+    props.childs = childs;
+
+    return { props };
+  },
+  sessionConfig
+);
+
+export default function render(props) {
   const data = {
     first_name: "Robert",
     last_name: "Godwin",
@@ -38,8 +68,12 @@ export default function render() {
     <Base>
       <div id={styles.ParentProfile}>
         <div className="d-flex flex-column align-items-center mb-3">
-          <div className="Picture Picture--big mx-auto mb-1">R</div>
-          <h3 className="m-0">Robert Godwin</h3>
+          <div className="Picture Picture--big mx-auto mb-1">
+            {props.user.firstName.charAt(0).toUpperCase()}
+          </div>
+          <h3 className="m-0">
+            {props.user.firstName} {props.user.lastName}
+          </h3>
           <p className="small m-0">Parent</p>
         </div>
 
@@ -47,17 +81,19 @@ export default function render() {
         <div className="Card">
           <div className={styles.profile__header}>
             <div className={styles.profile__title}>Children</div>
-            <div className={styles.profile__add__button}>+</div>
+            <Link href="register/register-child">
+              <div className={styles.profile__add__button}>+</div>
+            </Link>
           </div>
-          {data.children.map((child) => (
+          {props.childs.map((child) => (
             <div className={styles.profile__child} key={child.id}>
               <div className={styles.profile__child__picture}></div>
               <div className={styles.profile__informations}>
                 <div className={styles.profile__child__name}>
-                  {child.first_name} {child.last_name}
+                  {child.firstName} {child.lastName}
                 </div>
                 <div className={styles.profile__child__adding__date}>
-                  Added on {child.created_at}
+                  Added on {child.createdAt}
                 </div>
               </div>
             </div>
@@ -94,10 +130,10 @@ export default function render() {
         <div className="Card">
           <div className={styles.profile__title}>Personnal informations</div>
           <div className={styles.profile__informations}>
-            <div className={styles.profile__email}>{data.mail}</div>
-            <div className={styles.profile__birthdate}>
+            <div className={styles.profile__email}>{props.user.email}</div>
+            {/* <div className={styles.profile__birthdate}>
               Born on the {data.birthdate}
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -106,7 +142,7 @@ export default function render() {
           <input
             className="Button Button--tertiary"
             type="button"
-            value={"logout"}
+            value={"Logout"}
           />
           <div className={styles.profile__title}>
             <div className={styles.profile__change__password}>
@@ -127,121 +163,3 @@ export default function render() {
     </Base>
   );
 }
-// function ParentSettings() {
-//   const location = useLocation();
-
-//   const isSettingsPage = location.pathname === "/settings";
-//   const isChangePasswordPage = location.pathname === "/change-password";
-//   const isLogOutPage = location.pathname === "/logout";
-
-//   return (
-//     <div>
-//       <Header retour="true"></Header>
-//       <div className="container__profile">
-//         {isChangePasswordPage ? (
-//           <>
-//             <h2>Changing your password</h2>
-//             <h3>New password</h3>
-//             <div className="form">
-//               <Formik
-//                 initialValues={{
-//                   password: "",
-//                   password: "",
-//                 }}
-//                 validate={(values) => {
-//                   const errors = {};
-//                   if (!values.email) {
-//                     errors.email = "Required";
-//                   } else if (
-//                     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-//                       values.email
-//                     )
-//                   ) {
-//                     errors.email = "Invalid email address";
-//                   }
-//                   return errors;
-//                 }}
-//                 onSubmit={async (values) => {
-//                   fetch(process.env.REACT_APP_API + "/api/login", {
-//                     method: "post",
-//                     body: JSON.stringify(values),
-//                     headers: {
-//                       Accept: "application/json",
-//                       "Content-Type": "application/json",
-//                     },
-//                   })
-//                     .then((res) => res.json())
-//                     .then(
-//                       (result) => {
-//                         if (result.access_token) {
-//                           sessionStorage.setItem("isLoggedIn", true);
-//                           sessionStorage.setItem("role", result.user.role);
-//                           sessionStorage.setItem(
-//                             "user",
-//                             JSON.stringify(result)
-//                           );
-//                           // result.user.role === "admin"
-//                           //   ? setRoleAdmin(true)
-//                           //   : setIsSubmitted(true);
-//                           // setIsSubmitted(true)
-//                         } else {
-//                           // setIsSubmitted(false);
-//                           alert(
-//                             "Error, please verify your user or your password"
-//                           );
-//                         }
-//                       },
-//                       (error) => {
-//                         // setIsSubmitted(false);
-//                         console.log(error);
-//                       }
-//                     );
-//                 }}
-//               >
-//                 <Form>
-//                   <div className="input-container">
-//                     <Field
-//                       type="text"
-//                       name="password"
-//                       placeholder="Enter your new password"
-//                       required
-//                     />
-//                   </div>
-//                   <div className="input-container">
-//                     <Field
-//                       type="text"
-//                       name="password"
-//                       placeholder="Confirm your new password"
-//                       required
-//                     />
-//                   </div>
-//                   {/* {renderErrorMessage("pass")}
-//     {renderErrorMessage("email")} */}
-//                   <div className="button-container">
-//                     <button className="button-dark" type="submit">
-//                       Sign in
-//                     </button>
-//                   </div>
-//                 </Form>
-//               </Formik>
-//             </div>
-//           </>
-//         ) : isLogOutPage ? (
-//           <Navigate to="/" />
-//         ) : (
-//           ""
-//         )}
-//         <div className="navbar">
-//           {" "}
-//           <Navbar></Navbar>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// ParentSettings.propTypes = {};
-
-// ParentSettings.defaultProps = {};
-
-// export default ParentSettings;
