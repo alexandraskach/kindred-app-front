@@ -104,7 +104,7 @@
   }
 
   .profile__informations {
-    width: 185px;
+    width: calc(100% - 70px);
     font-family: "Poppins", sans-serif;
     font-style: normal;
     font-weight: 400;
