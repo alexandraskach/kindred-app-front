@@ -74,7 +74,14 @@ export default function render(props) {
           <div key={reward.id} className="Card">
             <h2>
               {reward.points} points{" "}
-              <Link href="/rewards/edit-reward">
+              <Link
+                href={{
+                  pathname: "/rewards/edit-reward",
+                  query: {
+                    idReward: reward.id,
+                  },
+                }}
+              >
                 <span style={{ float: "right" }}>
                   <EditIcon></EditIcon>
                 </span>

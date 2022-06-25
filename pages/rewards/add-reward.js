@@ -1,21 +1,32 @@
 import { Base } from "components/Base";
 import { Form, Formik, Field } from "formik";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionConfig } from "logic/session";
 
-export async function onSubmit(data) {
-  //   const response = await fetch(
-  //     process.env.NEXT_PUBLIC_API_URL + "/login_check",
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(data),
-  //     }
-  //   );
-  //   const json = await response.json();
-  //   localStorage.JWT = json.token;
-  //   console.log(json.token);
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps(context) {
+    if (!context.req.session.user) {
+      return { redirect: { destination: "/login" } };
+    }
+    let props = context.req.session;
+    return { props };
+  },
+  sessionConfig
+);
+
+export async function onSubmit(data, token) {
+  console.log(data);
+  const response = await fetch("/api/add-reward", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  console.log(json);
 }
 
 export function validation(values) {
@@ -30,14 +41,18 @@ export function validation(values) {
   return errors;
 }
 
-export default function render() {
+export default function render(props) {
   return (
     <Base>
       <div>
         <h1>Add reward</h1>
         <Formik
-          initialValues={{ points: "", description: "" }}
-          onSubmit={(data) => onSubmit(data)}
+          initialValues={{
+            points: "",
+            description: "",
+            user: `${props.idChildSelected}`,
+          }}
+          onSubmit={(data) => onSubmit(data, props.token)}
           validate={validation}
         >
           {({ errors, touched, validateOnChange }) => {
