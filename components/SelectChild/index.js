@@ -35,8 +35,6 @@ export async function handleClick(childId) {
     body: childId,
   });
   const json = await response.json().then(() => {
-    // const router = useRouter();
-    // router.reload(window.location.pathname);
     Router.reload();
   });
   console.log("response /api/select-child", json);

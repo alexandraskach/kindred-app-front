@@ -50,7 +50,7 @@ export default function render(props) {
           initialValues={{
             points: "",
             description: "",
-            user: `${props.idChildSelected}`,
+            user: `/api/users/${props.idChildSelected}`,
           }}
           onSubmit={(data) => onSubmit(data, props.token)}
           validate={validation}

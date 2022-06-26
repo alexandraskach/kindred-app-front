@@ -40,18 +40,17 @@ export const getServerSideProps = withIronSessionSsr(
 
 export async function onSubmit(data, token) {
   console.log(data, token);
-  //TODO
-  // const response = await fetch("/api/edit-reward", {
-  //   method: "POST",
-  //   headers: {
-  //     Accept: "application/json",
-  //     "Content-Type": "application/json",
-  //     Authorization: "Bearer " + token,
-  //   },
-  //   body: JSON.stringify(data),
-  // });
-  // const json = await response.json();
-  // console.log(json);
+  const response = await fetch("/api/edit-reward", {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  console.log(json);
 }
 
 export function validation(values) {
@@ -76,7 +75,7 @@ export default function render(props) {
           initialValues={{
             points: props.currentReward.points,
             description: props.currentReward.description,
-            user: `${props.idChildSelected}`,
+            user: `/api/users/${props.idChildSelected}`,
           }}
           onSubmit={(data) => onSubmit(data, props.token)}
           validate={validation}

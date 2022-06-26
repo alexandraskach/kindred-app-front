@@ -19,17 +19,16 @@ export const getServerSideProps = withIronSessionSsr(
 );
 export async function onSubmit(data) {
   console.log("form data", data);
-  // const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/edit-mission', {
-  // 	method: 'PUT',
-  // 	headers: {
-  // 		'Accept': 'application/json',
-  // 		'Content-Type': 'application/json'
-  // 	},
-  // 	body: JSON.stringify(data),
-  // })
-  // 	const json = await response.json()
-  // localStorage.JWT = json.token
-  // console.log(json.token)
+  const response = await fetch("/api/add-mission", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  console.log(json);
 }
 
 export function validation(values) {
@@ -39,8 +38,8 @@ export function validation(values) {
   if (values.title == "") errors.title = "Title is required";
 
   // Kins
-  if (values.kins == "") {
-    errors.kins = "Kins are required";
+  if (values.points == "") {
+    errors.points = "Kins are required";
   }
 
   // startWeek
@@ -58,20 +57,29 @@ export function validation(values) {
   return errors;
 }
 
-export default function render() {
+export default function render(props) {
   return (
     <Base>
       <div id={styles.Missions} className="mt-8">
         <div className="wrapper">
           <h2>Add mission</h2>
           <Formik
+            //TODO
             initialValues={{
               title: "",
-              kins: "",
+              points: "",
               startWeek: "",
               endWeek: "",
               description: "",
               category: "",
+              isRepeated: false,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              week: "",
+              user: `/api/users/${props.idChildSelected}`,
+              parentNotation: "",
+              childNotation: "",
+              contract: "/api/contracts/1",
             }} // for dev
             onSubmit={(data) => onSubmit(data)}
             validate={validation}
@@ -84,7 +92,7 @@ export default function render() {
                 descriptionClassName = "Input";
 
               titleClassName += errors.title && touched.title ? " error" : "";
-              kinsClassName += errors.kins && touched.kins ? " error" : "";
+              kinsClassName += errors.points && touched.points ? " error" : "";
               startWeekClassName +=
                 errors.startWeek && touched.startWeek ? " error" : "";
               endWeekClassName +=
@@ -108,19 +116,19 @@ export default function render() {
                   )}
 
                   {/* kins */}
-                  <label htmlFor="form-kins">Kins</label>
+                  <label htmlFor="form-points">Kins</label>
                   <Field
-                    id="form-kins"
+                    id="form-points"
                     className={kinsClassName}
-                    name="kins"
+                    name="points"
                     type="number"
                     max="1000"
                     min="1"
                     placeholder="200"
                     required
                   />
-                  {errors.kins && touched.kins && (
-                    <span className="form-error">{errors.kins}</span>
+                  {errors.points && touched.points && (
+                    <span className="form-error">{errors.points}</span>
                   )}
 
                   {/* start week */}

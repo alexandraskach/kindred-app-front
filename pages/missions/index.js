@@ -36,21 +36,6 @@ export const getServerSideProps = withIronSessionSsr(
 );
 
 export default function render(props) {
-  const data = {
-    id: 1,
-    description: "description de la mission",
-    points: 300,
-    isRepeated: "",
-    createdAt: "",
-    updatedAt: "",
-    category: "",
-    week: "",
-    user: "",
-    parentNotation: "",
-    childNotation: "",
-    userContract: "",
-  };
-
   return (
     <Base>
       <div id={styles.Missions} className="mt-8">
@@ -75,7 +60,14 @@ export default function render(props) {
                 <span className="ml-2 mt-1">
                   <RefreshIcon></RefreshIcon>
                 </span>
-                <Link href="/missions/edit-mission">
+                <Link
+                  href={{
+                    pathname: "/missions/edit-mission",
+                    // query: {
+                    //   idMission: mission.id,
+                    // },
+                  }}
+                >
                   <span className="ml-2 mt-1">
                     <EditIcon></EditIcon>
                   </span>
