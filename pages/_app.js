@@ -2,7 +2,6 @@ import { Layout } from "components/Layout";
 import "styles/index.scss";
 
 function MyApp({ Component, pageProps }) {
-  console.log(pageProps)
   return (
     <Layout>
       <Component {...pageProps} />

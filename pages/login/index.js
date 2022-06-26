@@ -2,7 +2,6 @@ import { Formik, Field, Form } from "formik";
 import { Base } from "components/Base";
 import { useRouter } from "next/router";
 import styles from "./login.module.scss";
-import redirectToAuh from "components/redirectToAuh";
 import { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
@@ -37,7 +36,7 @@ export async function onSubmit(data, router) {
   const response = await fetch("/api/login", {
     method: "POST",
     headers: {
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
@@ -45,9 +44,9 @@ export async function onSubmit(data, router) {
   const json = await response.json();
   console.log(json);
 
-  if (json.user) {
+  if (json.userId) {
     // router.replace(router.asPath) <-- refresh page with new session data
-    router.push("/");
+    router.push("/")
   }
 }
 

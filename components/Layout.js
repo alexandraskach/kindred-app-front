@@ -9,7 +9,7 @@ export function Layout({ children }) {
       {/* header */}
       <Header/>
       <Nav/>
-      <main>{children}</main>
+      <main id="Page">{children}</main>
     </>
   );
 }
