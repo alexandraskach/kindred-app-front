@@ -61,7 +61,7 @@ export default function render(props) {
                   )}
                 </div>
                 <div>{mission.description}</div>
-                <Link href="#0"><a className="position-fill"></a></Link>
+                <Link href={'/missions/edit/' + mission.id}><a className="position-fill"></a></Link>
               </div>
             )
           })}

@@ -1,11 +1,13 @@
 import { Base } from "components/Base";
-import styles from "./edit-contract.module.scss";
+// import styles from "./edit-contract.module.scss";
 import { Form, Formik, Field } from "formik";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
 import redirectToAuth from "components/redirectToAuth";
 import getData from "components/getData";
 import { useState } from "react";
+import DateToText from "components/DateToText";
+import Link from 'next/link'
 
 export const getServerSideProps = withIronSessionSsr(
 	async function getServerSideProps(context) {
@@ -24,79 +26,36 @@ export const getServerSideProps = withIronSessionSsr(
 	sessionConfig
 )
 
-export async function onSubmit(data, contractId) {
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + "/api/contracts/" + contractId,
-      {
-        method: "PUT",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    const json = await response.json()
-    console.log(json)
-}
-
-export function validation(values) {
-  const errors = {};
-
-  // points
-  if (values.ratio < 0) errors.ratio = "Ratio must be greater than 0";
-
-  console.log(values.ratio)
-
-  return errors;
-}
-
 export default function render(props) {
   console.log(props)
-
-  const [ratio, SetRatio] = useState(props.contract.ratioMoney)
-
   return (
-
-    <Base>
-      <div id={styles.EditContract}>
-        {/* <div>
-          <div className="body-semibold">Child</div>
-          <select>
-            {data.children.map((child) => (
-              <option value={child.first_name}>
-                {child.first_name} {child.last_name}
-              </option>
-            ))}
-          </select>
-        </div> */}
-        <h2>Contrat pour {props.child.fullName}</h2>
-        <p>Votre enfant aura {ratio * props.wallet.points}€</p>
-        <Formik
-          initialValues={{ ratio, description: props.contract.description }}
-          onSubmit={(data) => onSubmit(data, props.contract.id)}
-          validate={validation}
-        >
-          {({ errors, touched }) => {
-            console.log(errors)
-            return (
-              <Form className="mt-5 mb-2">
-
-                {/* points value */}
-                <label htmlFor="form-ratio">1 kint = {ratio * 1}€</label>
-                <Field className="Input" id="form-ratio" type="number" step="0.1" name="ratio" onChange={e => SetRatio(e.target.value)} value={ratio} placeholder="Enter points value" />
-                {errors.ratio && touched.ratio && (<span className="form-error">{errors.ratio}</span>)}
-
-                {/* description */}
-                <label htmlFor="form-description">Description</label>
-                <Field className="Input" id="form-description" as="textarea" type="text" name="description" placeholder="Enter your new description" />
-
-                <button className="Button Button--tertiary" type="submit">Save modification</button>
-              </Form>
-            );
-          }}
-        </Formik>
+    <>
+      <h2>Contract</h2>
+      {props.contract.signedAt && (
+        <p className="color-success">Signed</p>
+      )}
+      {!props.contract.signedAt && (
+        <p className="color-gray">Awaiting signature</p>
+      )}
+      <div className="Card position-relative">
+        <div className="d-flex justify-content-between">
+          <div className="d-flex align-items-center">
+            <div className="Picture Picture--letter mr-1 decoration-none">{props.child.firstName.split('')[0]}</div>
+            <div>
+              <div className="body-semibold mb-0">{props.child.fullName}</div>
+              <div className="small color-gray mb-0">{DateToText(props.child.createdAt)}</div>
+            </div>
+          </div>
+          {props.contract.signedAt && (
+            <div className="Status Status--success"></div>
+          )}
+          {!props.contract.signedAt && (
+            <div className="Status"></div>
+          )}
+        </div>
+        <div>{props.contract.description}</div>
+        <Link href={'/contract/edit/' + props.child.id}><a className="position-fill"></a></Link>
       </div>
-    </Base>
-  );
+    </>
+  )
 }
