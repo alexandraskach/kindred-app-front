@@ -5,89 +5,166 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
 import SelectChild from "components/SelectChild";
 import { useRouter } from "next/router";
-
-const ratingChanged = (newRating) => {
-  console.log(newRating);
-};
+import redirectToAuth from "components/redirectToAuth";
+import getChildren from "components/getChildren";
+import getData from "components/getData";
+import { useState } from "react";
+import Link from "next/link";
+import EditIcon from "components/icons/EditIcon";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
-    console.log("user", context.req.session.user);
-    if (!context.req.session.user) {
+    const props = context.req.session;
+
+    if (await redirectToAuth(props)) {
       return { redirect: { destination: "/login" } };
     }
-    return { props: context.req.session.user };
+    props.children = await getChildren(props);
+    props.currentChild = await getData(
+      props.token,
+      "/api/users/" + props.currentChildId
+    );
+    props.contract = await getData(
+      props.token,
+      props.currentChild.childContract
+    );
+
+    // http://localhost:8000/api/contracts/4/missions
+    // http://localhost:8000/api/contracts/4/missions
+    let responseMissions;
+    responseMissions = await fetch(
+      process.env.NEXT_PUBLIC_API_URL +
+        `/api/contracts/${props.contract.id}/missions`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + props.token,
+        },
+      }
+    );
+
+    let missions = await responseMissions.json();
+    props.currentChild.missions = missions;
+    return { props };
   },
   sessionConfig
 );
 
+export async function newRating(missionId, parentRating) {
+  console.log("missionId", missionId);
+  console.log("parentRating", parentRating);
+  const data = {
+    parentRating: parentRating,
+    week: "2022-06-27",
+    mission: `api/missions/${missionId}`,
+  };
+  const response = await fetch("/api/add-rating", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  console.log(json);
+}
+
+const dateToText = (d) => {
+  let monthTexts = [
+      "january",
+      "february",
+      "march",
+      "april",
+      "may",
+      "june",
+      "july",
+      "august",
+      "september",
+      "october",
+      "november",
+      "december",
+    ],
+    date = new Date(d),
+    dayText =
+      date.getDate().toString().length == 1
+        ? "0" + date.getDate()
+        : date.getDate(),
+    monthText = monthTexts[date.getMonth() - 1];
+
+  return dayText + " " + monthText + " " + date.getFullYear();
+};
+
 export default function render(props) {
-  const router = useRouter();
+  console.log("props", props);
+
+  const ratingChanged = (newRating) => {
+    props.user.newRating = newRating;
+  };
+
+  // const router = useRouter();
   return (
     <Base>
       <div id={styles.Ratings} className="mt-8">
         <div className="select-container">
-          <SelectChild childs={props.childs}></SelectChild>
+          <SelectChild
+            children={props.children}
+            currentChild={props.currentChild}
+          ></SelectChild>
         </div>
         <div className="ratings-title mb-2 mt-2">
           <h3>You can rate this down</h3>
         </div>
         <div className="centered">
           <div className="ratings-container">
-            <div className="ratings__mission card mb-2">
-              <p>
-                Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
-              </p>
-              <div className="ratings__mission_button button-container">
-                <ReactStars
-                  className="mb-2"
-                  count={5}
-                  onChange={ratingChanged}
-                  size={24}
-                  activeColor="#ffd700"
-                />
-                <button className="Button Button--primary">Submit</button>
+            {props.currentChild.missions.map((mission) => (
+              <div key={mission.id} className="ratings__mission card mb-2">
+                <p>{mission.title}</p>
+                <p className="small">
+                  Start date : {dateToText(mission.start)}
+                </p>
+                <p className="small">End date : {dateToText(mission.end)}</p>
+                <p className="small">Points : {mission.points}</p>
+                <div className="ratings__mission_button button-container">
+                  <ReactStars
+                    className="mb-2"
+                    count={5}
+                    onChange={ratingChanged}
+                    size={24}
+                    activeColor="#ffd700"
+                  />
+                  <button
+                    onClick={() => newRating(mission.id, props.user.newRating)}
+                    className="Button Button--primary"
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="ratings__mission card mb-2">
-              <p>
-                Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
-              </p>
-              <div className="ratings__mission_button button-container">
-                <ReactStars
-                  className="mb-2"
-                  count={5}
-                  onChange={ratingChanged}
-                  size={24}
-                  activeColor="#ffd700"
-                />
-                <button className="Button Button--primary">Submit</button>
-              </div>
-            </div>
-            <div className="ratings__mission card mb-2">
-              <p>
-                Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
-              </p>
-              <div className="ratings__mission_button button-container">
-                <ReactStars
-                  className="mb-2"
-                  count={5}
-                  onChange={ratingChanged}
-                  size={24}
-                  activeColor="#ffd700"
-                />
-                <button className="Button Button--primary">Submit</button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
         <div className="ratings-title">
           {" "}
           <h3>Last week</h3>
         </div>
-        <div className="centered">
+        <div className="">
           <div className="ratings-container">
             <div className="ratings__mission card mb-2">
+              <Link
+                href={{
+                  pathname: "/ratings/edit-rating",
+                  // query: {
+                  //   idReward: reward.id,
+                  // },
+                }}
+              >
+                <span style={{ float: "right" }} className="ml-2">
+                  <EditIcon></EditIcon>
+                </span>
+              </Link>
               <p>
                 Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
               </p>
