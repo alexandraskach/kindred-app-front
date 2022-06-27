@@ -1,7 +1,6 @@
 
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { Base } from "components/Base"
-import redirectToAuth from "components/redirectToAuh"
 
 export async function login(data) {
 	const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/login_check', {
@@ -60,7 +59,6 @@ export function validation(values) {
 
 
 export default function render() {
-	redirectToAuth()
 	return (
 		<Base>
 			<div className='mt-8'>

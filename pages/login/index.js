@@ -22,12 +22,11 @@ export const getServerSideProps = withIronSessionSsr(
     if (context.req.session.token) {
       return {
         props: {
-          token: context.req.session.token,
-          user: context.req.session.user,
-        },
-      };
+          token: context.req.session.token
+        }
+      }
     }
-    return { props: { token: "" } };
+    return { props: { token: "" } }
   },
   sessionConfig
 );
@@ -66,8 +65,6 @@ export function validation(values) {
 
 export default function render(props) {
   const router = useRouter();
-
-  console.log(props.user);
 
   return (
     <div id={styles.Login} className="mt-8">

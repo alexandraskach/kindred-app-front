@@ -8,8 +8,8 @@ export function Layout({ children }) {
     <>
       {/* header */}
       <Header/>
-      <Nav/>
       <main id="Page">{children}</main>
+      <Nav/>
     </>
   );
 }

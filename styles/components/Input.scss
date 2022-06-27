@@ -24,6 +24,17 @@
     background-image: url("/icons/lock.svg");
   }
 
+  &--control {
+
+    &.minimum > *:first-child {
+      visibility: hidden;
+    }
+    
+    &.maximum > *:last-child {
+      visibility: hidden;
+    }
+  }
+
   &:focus,
   &:focus-visible {
     border-color: $color-secondary;

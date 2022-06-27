@@ -7,6 +7,7 @@ import getChildren from "components/getChildren";
 import PlusFillIcon from "components/icons/PlusFillIcon";
 import { useReducer } from "react";
 import Link from 'next/link'
+import getData from "components/getData";
 
 
 export const getServerSideProps = withIronSessionSsr(
@@ -17,6 +18,7 @@ export const getServerSideProps = withIronSessionSsr(
 			return { redirect: { destination: "/login" } }
 		}
 	  
+		props.user = await getData(props.token, '/api/users/' + props.userId)
 		props.children = await getChildren(props)
 	  
 		return { props }
@@ -30,7 +32,7 @@ export function logout() {
 
 export default function render({user, children}) {
 	console.log(user)
-	
+
 	return (
 		<Base>
 			<div>

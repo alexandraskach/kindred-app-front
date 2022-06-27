@@ -41,10 +41,10 @@ export default function SelectChild({children, currentChild}) {
   const router = useRouter()
   let displayOthers = true
 
-  if (children.length == 1 && children[0].id == currentChild.id) displayOthers = false
+  if (children.length == 1 && children[0].id == currentChild?.id) displayOthers = false
 
   return (
-    <div className={children.length == 1 ? 'SelectChild SelectChild--once' : 'SelectChild'}>
+    <div className={displayOthers ? 'SelectChild' : 'SelectChild SelectChild--once'}>
     {/* <div className={'SelectChild'}> */}
       <div className="SelectChild__current" onClick={(e) => toggle(e.target.parentNode)}>
         <div className="SelectChild__current__informations">
