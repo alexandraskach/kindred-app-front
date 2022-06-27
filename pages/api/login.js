@@ -4,7 +4,7 @@ import { sessionConfig } from "logic/session";
 
 
 export default withIronSessionApiRoute(async function login(req, res) {
-
+  
   // token
   let response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/login_check', {
 		method: 'POST',
@@ -50,9 +50,9 @@ export default withIronSessionApiRoute(async function login(req, res) {
 
   if (user) {
     req.session.token = token
-    req.session.user = user
+    req.session.userId = user.id
     await req.session.save();
-    return res.status(200).json({ token, user })
+    return res.status(200).json({ token, userId: user.id })
 	}
 }, sessionConfig);
 

@@ -3,6 +3,18 @@
     row-gap: 0;
     padding: 0;
 
+    &--once {
+
+        .SelectChild__others,
+        .SelectChild__current > svg {
+            display: none;
+        }
+
+        .SelectChild__current {
+            cursor: auto;
+        }
+    }
+
     &__current {
         display: flex;
         justify-content: space-between;

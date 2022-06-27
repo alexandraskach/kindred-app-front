@@ -29,10 +29,10 @@ export const getServerSideProps = withIronSessionSsr(
     );
     let childs = await responseChilds.json();
     let responseRewards;
-    if (context.req.session.idChildSelected) {
+    if (context.req.session.currentChildId) {
       responseRewards = await fetch(
         process.env.NEXT_PUBLIC_API_URL +
-          `/api/users/${context.req.session.idChildSelected}/rewards`,
+          `/api/users/${context.req.session.currentChildId}/rewards`,
         {
           method: "GET",
           headers: {

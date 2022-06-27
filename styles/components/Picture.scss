@@ -4,18 +4,22 @@
     border-radius: $radius;
     object-fit: cover;
 
-    &--big {
+    &--letter {
         display: flex;
         justify-content: center;
         align-items: center;
+        color: white;
+        background-color: $color-secondary;
+        text-transform: capitalize;
+    }
+
+    &--big {
         width: 10rem;
         height: 10rem;
         font-size: 5.2rem;
         font-weight: 500;
         line-height: 10rem;
         object-fit: cover;
-        color: white;
-        background-color: $color-secondary;
         border-radius: 100%;
     }
 }
