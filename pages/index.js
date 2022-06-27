@@ -38,16 +38,17 @@ export default function render(props) {
   return (
     <>
       <h2 className="mb-3">Dashboard</h2>
+
       <SelectChild
         children={props.children}
         currentChild={props.currentChild}
       />
+
       {props.currentChild && (
         <>
           <button className="Button Button--big Button--primary mb-2">
             Rate new missions
           </button>
-
           <div className="Card">
             <div>
               <div className="d-flex justify-content-between align-items-center">
@@ -58,30 +59,25 @@ export default function render(props) {
             </div>
             <a href="#0">View history</a>
             <div>
-              <a className="Button Button--tertiary">View missions</a>
-              <a className="Button">Add mission</a>
+              <Link href="/missions">
+                <a className="Button Button--tertiary">View missions</a>
+              </Link>
+              <Link href="/missions/add-mission">
+                <a className="Button">Add mission</a>
+              </Link>
             </div>
           </div>
-
-          <div className="color-success">38 missions accomplished</div>
-          {/* </div> */}
-          <a href="#0">View history</a>
-          <div>
-            <Link href="/missions">
-              <a className="Button Button--tertiary">View missions</a>
-            </Link>
-            <Link href="/missions/add-mission">
-              <a className="Button">Add mission</a>
-            </Link>
-          </div>
-          {/* </div> */}
 
           <div className="Card">
             <div className="h1 m-0">180 points</div>
             <a href="#0">View history</a>
             <div>
-              {/* <a className="Button Button--tertiary">View rewards</a> */}
-              <a className="Button">Add reward</a>
+              <Link href="/rewards">
+                <a className="Button Button--tertiary">View rewards</a>
+              </Link>
+              <Link href="/rewards/add-reward">
+                <a className="Button">Add reward</a>
+              </Link>
             </div>
           </div>
         </>

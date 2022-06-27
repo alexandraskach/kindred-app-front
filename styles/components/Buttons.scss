@@ -20,6 +20,10 @@
     cursor: pointer;
   }
 
+  & > svg {
+    margin-left: 1rem;
+  }
+
   &--primary {
     color: $color-tertiary;
     background-color: $color-primary;

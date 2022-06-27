@@ -3,16 +3,6 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
 import { useRouter } from "next/router";
 
-// export const getServerSideProps = withIronSessionSsr(
-//   async function getServerSideProps(context) {
-//     if (!context.req.session.user) {
-//       return { redirect: { destination: "/login" } };
-//     }
-//     return { props: context.req.session };
-//   },
-//   sessionConfig
-// )
-
 export function toggle(select) {
   if (!select.classList.contains("SelectChild"))
     select = select.closest(".SelectChild");
@@ -31,7 +21,7 @@ export function toggle(select) {
     : "0px";
 }
 
-export async function handleClick(childId, router) {
+export async function handleClick(childId, router, target) {
   let response = await fetch("/api/select-child", {
     method: "POST",
     headers: {
@@ -45,21 +35,22 @@ export async function handleClick(childId, router) {
 
   if (response.status == 200) {
     console.log("refresh");
+    toggle(target.closest(".SelectChild"));
     router.replace(router.asPath);
   }
 }
 
-export default function SelectChild(props) {
+export default function SelectChild({ children, currentChild }) {
   const router = useRouter();
+  let displayOthers = true;
 
-  // console.log(props)
+  if (children.length == 1 && children[0].id == currentChild.id)
+    displayOthers = false;
 
   return (
     <div
       className={
-        props.children.length == 1
-          ? "SelectChild SelectChild--once"
-          : "SelectChild"
+        children.length == 1 ? "SelectChild SelectChild--once" : "SelectChild"
       }
     >
       {/* <div className={'SelectChild'}> */}
@@ -68,45 +59,44 @@ export default function SelectChild(props) {
         onClick={(e) => toggle(e.target.parentNode)}
       >
         <div className="SelectChild__current__informations">
-          {props.currentChild && (
+          {currentChild && (
             <div className="d-flex align-items-center">
               <div className="Picture Picture--letter mr-1">
-                {props.currentChild.firstName.split("")[0]}
+                {currentChild.firstName.split("")[0]}
               </div>
               <span>
-                {props.currentChild.firstName} {props.currentChild.lastName}
+                {currentChild.firstName} {currentChild.lastName}
               </span>
             </div>
           )}
-          {!props.currentChild && (
+          {!currentChild && (
             <span className="mt-1 mb-1 ml-1">Select child</span>
           )}
         </div>
         <ChevronTop />
       </div>
-      {props.children.length !== 1 &&
-        props.children[0].id != props.currentChildId && (
-          <div className="SelectChild__others">
-            <div className="SelectChild__others__container">
-              {props.children.map((child) => {
-                return child.id != props.currentChild?.id ? (
-                  <div
-                    onClick={(e) => handleClick(child.id, router)}
-                    key={child.id}
-                    className="SelectChild__others__container__item"
-                  >
-                    <div className="Picture Picture--letter mr-1">
-                      {child.firstName.split("")[0]}
-                    </div>
-                    <span>
-                      {child.firstName} {child.lastName}
-                    </span>
+      {displayOthers && (
+        <div className="SelectChild__others">
+          <div className="SelectChild__others__container">
+            {children.map((child) => {
+              return child.id != currentChild?.id ? (
+                <div
+                  onClick={(e) => handleClick(child.id, router, e.target)}
+                  key={child.id}
+                  className="SelectChild__others__container__item"
+                >
+                  <div className="Picture Picture--letter mr-1">
+                    {child.firstName.split("")[0]}
                   </div>
-                ) : null;
-              })}
-            </div>
+                  <span>
+                    {child.firstName} {child.lastName}
+                  </span>
+                </div>
+              ) : null;
+            })}
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 }
