@@ -55,8 +55,12 @@ export default function render(props) {
             </div>
             <a href="#0">View history</a>
             <div>
-              <a className="Button Button--tertiary">View missions</a>
-              <a className="Button">Add mission</a>
+              <Link href="/missions">
+                <a className="Button Button--tertiary">View missions</a>
+              </Link>
+              <Link href="/missions/add-mission">
+                <a className="Button">Add mission</a>
+              </Link>
             </div>
           </div>
 
@@ -64,8 +68,12 @@ export default function render(props) {
             <div className="h1 m-0">180 points</div>
             <a href="#0">View history</a>
             <div>
-              <a className="Button Button--tertiary">View rewards</a>
-              <a className="Button">Add reward</a>
+              <Link href="/rewards">
+                <a className="Button Button--tertiary">View rewards</a>
+              </Link>
+              <Link href="/rewards/add-reward">
+                <a className="Button">Add reward</a>
+              </Link>
             </div>
           </div>
         </>

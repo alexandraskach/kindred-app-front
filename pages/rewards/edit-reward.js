@@ -9,26 +9,48 @@ export const getServerSideProps = withIronSessionSsr(
     if (!context.req.session.user) {
       return { redirect: { destination: "/login" } };
     }
-    return { props: context.req.session.user };
+
+    let props = context.req.session;
+    let responseReward = await fetch(
+      process.env.NEXT_PUBLIC_API_URL +
+        `/api/rewards/${context.query.idReward}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + props.token,
+        },
+      }
+    );
+    let reward = await responseReward.json();
+
+    return {
+      props: {
+        token: context.req.session.token,
+        user: context.req.session.user,
+        idReward: context.query.idReward,
+        currentReward: reward,
+        idChildSelected: context.req.session.idChildSelected,
+      },
+    };
   },
   sessionConfig
 );
 
-export async function onSubmit(data) {
-  //   const response = await fetch(
-  //     process.env.NEXT_PUBLIC_API_URL + "/login_check",
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(data),
-  //     }
-  //   );
-  //   const json = await response.json();
-  //   localStorage.JWT = json.token;
-  //   console.log(json.token);
+export async function onSubmit(data, token) {
+  console.log(data, token);
+  const response = await fetch("/api/edit-reward", {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  console.log(json);
 }
 
 export function validation(values) {
@@ -43,14 +65,19 @@ export function validation(values) {
   return errors;
 }
 
-export default function render() {
+export default function render(props) {
+  console.log(props);
   return (
     <Base>
       <div>
         <h1>Edit reward</h1>
         <Formik
-          initialValues={{ points: "", description: "" }}
-          onSubmit={(data) => onSubmit(data)}
+          initialValues={{
+            points: props.currentReward.points,
+            description: props.currentReward.description,
+            user: `/api/users/${props.idChildSelected}`,
+          }}
+          onSubmit={(data) => onSubmit(data, props.token)}
           validate={validation}
         >
           {({ errors, touched, validateOnChange }) => {

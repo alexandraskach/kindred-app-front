@@ -52,6 +52,20 @@ export const getServerSideProps = withIronSessionSsr(
   sessionConfig
 );
 
+export async function deleteReward(rewardId) {
+  console.log("rewardId", rewardId);
+  const response = await fetch("/api/delete-reward", {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(rewardId),
+  });
+  const json = await response.json();
+  console.log(json);
+}
+
 export default function render(props) {
   console.log("props", props);
   return (
@@ -74,12 +88,22 @@ export default function render(props) {
           <div key={reward.id} className="Card">
             <h2>
               {reward.points} points{" "}
-              <Link href="/rewards/edit-reward">
+              <Link
+                href={{
+                  pathname: "/rewards/edit-reward",
+                  query: {
+                    idReward: reward.id,
+                  },
+                }}
+              >
                 <span style={{ float: "right" }}>
                   <EditIcon></EditIcon>
                 </span>
               </Link>
-              <span style={{ float: "right" }}>
+              <span
+                style={{ float: "right" }}
+                onClick={() => deleteReward(reward.id)}
+              >
                 <TrashIcon></TrashIcon>
               </span>
             </h2>

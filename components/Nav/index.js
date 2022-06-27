@@ -50,7 +50,7 @@ export default function Nav() {
           href="/piggy-bank"
           className={
             "Nav__container__item " +
-            (router.pathname == "/piggy-bank"
+            (router.pathname == "/rewards"
               ? "Nav__container__item--active"
               : "")
           }
