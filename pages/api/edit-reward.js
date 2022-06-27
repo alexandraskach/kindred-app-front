@@ -2,15 +2,18 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionConfig } from "logic/session";
 
 export default withIronSessionApiRoute(async function editReward(req, res) {
-  let response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/rewards", {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + req.session.token,
-    },
-    body: JSON.stringify(req.body),
-  });
+  let response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + `/api/rewards/${req.body.rewardId}`,
+    {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + req.session.token,
+      },
+      body: JSON.stringify(req.body),
+    }
+  );
   let result = await response.json();
   console.log("result update reward", result);
   if (result) {

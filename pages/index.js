@@ -21,6 +21,9 @@ export const getServerSideProps = withIronSessionSsr(
 
     props.children = await getChildren(props);
     props.currentChild = await getCurrentChild(props);
+    // if (currentChild === null) {
+    //   props.currentChild = props.children[0];
+    // }
 
     if (props.currentChild) {
       props.wallet = await getWallet(props);

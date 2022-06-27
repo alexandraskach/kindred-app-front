@@ -8,16 +8,28 @@ import SelectChild from "components/SelectChild";
 import { useEffect, useState } from "react";
 import EditIcon from "components/icons/EditIcon";
 import TrashIcon from "components/icons/TrashIcon";
+import redirectToAuth from "components/redirectToAuth";
+import getChildren from "components/getChildren";
+import getCurrentChild from "components/getCurrentChild";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
+    const props = context.req.session;
+    if (await redirectToAuth(props)) {
+      return { redirect: { destination: "/login" } };
+    }
+    props.children = await getChildren(props);
+    props.currentChild = await getCurrentChild(props);
+    if (props.currentChild === null) {
+      props.currentChild = props.children[0];
+    }
     if (!context.req.session.user) {
       return { redirect: { destination: "/login" } };
     }
-
-    let props = context.req.session;
-    let responseChilds = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + `/api/users/${props.user.id}/childs`,
+    let responseRewards;
+    responseRewards = await fetch(
+      process.env.NEXT_PUBLIC_API_URL +
+        `/api/users/${props.currentChildId}/rewards`,
       {
         method: "GET",
         headers: {
@@ -27,26 +39,9 @@ export const getServerSideProps = withIronSessionSsr(
         },
       }
     );
-    let childs = await responseChilds.json();
-    let responseRewards;
-    if (context.req.session.currentChildId) {
-      responseRewards = await fetch(
-        process.env.NEXT_PUBLIC_API_URL +
-          `/api/users/${context.req.session.currentChildId}/rewards`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + props.token,
-          },
-        }
-      );
-    }
+
     let rewards = await responseRewards.json();
     props.rewards = rewards;
-    props.childs = childs;
-
     return { props };
   },
   sessionConfig
@@ -72,7 +67,10 @@ export default function render(props) {
     <Base>
       <div id={styles.Rewards} className="mt-8 wrapper">
         <div className="select-container">
-          <SelectChild childs={props.childs}></SelectChild>
+          <SelectChild
+            children={props.children}
+            currentChild={props.currentChild}
+          ></SelectChild>
         </div>
         <h2 className="mt-2">Rewards</h2>
         <Link href="/rewards/add-reward">

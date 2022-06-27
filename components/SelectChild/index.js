@@ -43,14 +43,21 @@ export async function handleClick(childId, router, target) {
 export default function SelectChild({ children, currentChild }) {
   const router = useRouter();
   let displayOthers = true;
+  // if (currentChild === null) {
+  //   currentChild = {
+  //     id: children[0].id,
+  //     firstName: children[0].firstName,
+  //     lastName: children[0].lastName,
+  //   };
+  // }
 
-  if (children.length == 1 && children[0].id == currentChild.id)
+  if (children.length == 1 && children[0].id == currentChild?.id)
     displayOthers = false;
 
   return (
     <div
       className={
-        children.length == 1 ? "SelectChild SelectChild--once" : "SelectChild"
+        displayOthers ? "SelectChild" : "SelectChild SelectChild--once"
       }
     >
       {/* <div className={'SelectChild'}> */}

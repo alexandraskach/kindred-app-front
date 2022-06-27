@@ -42,6 +42,7 @@ export function validation(values) {
 }
 
 export default function render(props) {
+  console.log(props);
   return (
     <Base>
       <div>
@@ -50,7 +51,7 @@ export default function render(props) {
           initialValues={{
             points: "",
             description: "",
-            user: `/api/users/${props.idChildSelected}`,
+            user: `/api/users/${props.currentChildId}`,
           }}
           onSubmit={(data) => onSubmit(data, props.token)}
           validate={validation}

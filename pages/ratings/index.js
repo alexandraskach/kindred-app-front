@@ -4,6 +4,7 @@ import ReactStars from "react-stars";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
 import SelectChild from "components/SelectChild";
+import { useRouter } from "next/router";
 
 const ratingChanged = (newRating) => {
   console.log(newRating);
