@@ -35,7 +35,7 @@ export async function onSubmit(data, router) {
   const response = await fetch("/api/login", {
     method: "POST",
     headers: {
-      "Accept": "application/json",
+      Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
@@ -45,7 +45,7 @@ export async function onSubmit(data, router) {
 
   if (json.userId) {
     // router.replace(router.asPath) <-- refresh page with new session data
-    router.push("/")
+    router.push("/");
   }
 }
 
@@ -65,6 +65,7 @@ export function validation(values) {
 
 export default function render(props) {
   const router = useRouter();
+  console.log(router)
 
   return (
     <div id={styles.Login} className="mt-8">

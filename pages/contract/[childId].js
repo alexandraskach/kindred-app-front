@@ -8,6 +8,7 @@ import getData from "components/getData";
 import { useState } from "react";
 import DateToText from "components/DateToText";
 import Link from 'next/link'
+import { useRouter } from "next/router";
 
 export const getServerSideProps = withIronSessionSsr(
 	async function getServerSideProps(context) {
@@ -19,7 +20,11 @@ export const getServerSideProps = withIronSessionSsr(
 
 		props.child = await getData(props.token, '/api/users/' + context.params.childId)
 		props.contract = await getData(props.token, props.child.childContract)
+
+    const missions = await Promise.all(props.contract.missions.map(async (url) => getData(props.token, url)))
+
 		props.wallet = await getData(props.token, props.child.wallet)
+    props.missions = missions
 	  
 		return { props }
 	},
@@ -27,6 +32,7 @@ export const getServerSideProps = withIronSessionSsr(
 )
 
 export default function render(props) {
+  const router = useRouter()
   console.log(props)
   return (
     <>

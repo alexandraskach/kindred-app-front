@@ -27,6 +27,7 @@ export const getServerSideProps = withIronSessionSsr(
 
     return {
       props: {
+        session: context.req.session,
         token: context.req.session.token,
         user: context.req.session.user,
         idReward: context.query.idReward,
@@ -75,7 +76,8 @@ export default function render(props) {
           initialValues={{
             points: props.currentReward.points,
             description: props.currentReward.description,
-            user: `/api/users/${props.idChildSelected}`,
+            user: `/api/users/${props.session.currentChildId}`,
+            rewardId: props.currentReward.id,
           }}
           onSubmit={(data) => onSubmit(data, props.token)}
           validate={validation}

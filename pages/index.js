@@ -11,20 +11,26 @@ import getWallet from "components/getWallet";
 import getCurrentChild from "components/getCurrentChild";
 import getData from "components/getData";
 
-
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
-    const props = context.req.session
+    const props = context.req.session;
 
-		if (await redirectToAuth(props)) {
-			return { redirect: { destination: "/login" } }
-		}
+    if (await redirectToAuth(props)) {
+      return { redirect: { destination: "/login" } };
+    }
 
-    props.children = await getChildren(props)
-    props.currentChild = await getCurrentChild(props)
+    props.user = await getData(props.token, '/api/users/' + props.useId);
+    props.children = await getChildren(props);
+    props.currentChild = await getCurrentChild(props);
+    
+    // if (!props.currentChildId && !props.user.parent) {
+    //   props.setDefaultChild = true
+    // } else {
+    //   props.setDefaultChild = false
+    // }
 
     if (props.currentChild) {
-      props.wallet = await getWallet(props)
+      props.wallet = await getWallet(props);
     }
     // props.contract = await getData(props.token, props.currentChild.childContract)
 
@@ -34,17 +40,35 @@ export const getServerSideProps = withIronSessionSsr(
 );
 
 export default function render(props) {
-  console.log(props)
+  console.log(props);
+
+  if (props.setDefaultChild) {
+    let response = fetch("/api/select-child", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ childId: props.currentChild.id }),
+    });
+  }
   // return null
   return (
     <>
       <h2 className="mb-3">Dashboard</h2>
 
-      <SelectChild children={props.children} currentChild={props.currentChild} />
+      <SelectChild
+        children={props.children}
+        currentChild={props.currentChild}
+      />
 
       {props.currentChild && (
         <>
-          <button className="Button Button--big Button--primary mb-2">Rate new missions</button>
+          <Link href="/ratings">
+            <button className="Button Button--big Button--primary mb-2">
+              Rate new missions
+            </button>
+          </Link>
           <div className="Card">
             <div>
               <div className="d-flex justify-content-between align-items-center">
@@ -58,7 +82,7 @@ export default function render(props) {
               <Link href="/missions">
                 <a className="Button Button--tertiary">View missions</a>
               </Link>
-              <Link href="/missions/add-mission">
+              <Link href="/missions/add">
                 <a className="Button">Add mission</a>
               </Link>
             </div>
@@ -79,5 +103,5 @@ export default function render(props) {
         </>
       )}
     </>
-  )
+  );
 }

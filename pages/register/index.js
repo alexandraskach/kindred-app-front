@@ -1,23 +1,9 @@
 
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { Base } from "components/Base"
+import { useRouter } from 'next/router';
 
-export async function login(data) {
-	const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/login_check', {
-		method: 'POST',
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(data),
-	})
-	const json = await response.json()
-	localStorage.JWT = json.token
-	console.log(json.token)
-}
-
-
-export async function onSubmit(data) {
+export async function onSubmit(data, router) {
 	const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/register', {
 		method: 'POST',
 		headers: {
@@ -30,7 +16,23 @@ export async function onSubmit(data) {
 	console.log(json)
 
 	if (json.success) {
-		login(data)
+		console.log('success')
+		const responseLogin = await fetch("/api/login", {
+			method: "POST",
+			headers: {
+			  "Accept": "application/json",
+			  "Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		  });
+	
+		const jsonLogin = await responseLogin.json();
+		console.log(jsonLogin);
+	
+		if (jsonLogin.userId) {
+			// router.replace(router.asPath) <-- refresh page with new session data
+			router.push("/");
+		}
 	}
 }
 
@@ -59,6 +61,8 @@ export function validation(values) {
 
 
 export default function render() {
+	const router = useRouter()
+
 	return (
 		<Base>
 			<div className='mt-8'>
@@ -72,7 +76,7 @@ export default function render() {
 				<Formik
 					// initialValues={{email: '', firstname: '', lastname: '', password: '', confirmPassword: ''}}
 					initialValues={{email: 'test@gmail.com', firstname: 'Lorem', lastname: 'Ipsum', password: 'password', confirmPassword: 'password'}} // dev
-					onSubmit={data => onSubmit(data)}
+					onSubmit={data => onSubmit(data, router)}
 					validate={validation}
 				>
 					{({ errors, touched }) => {

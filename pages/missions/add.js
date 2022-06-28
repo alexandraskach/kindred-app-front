@@ -13,6 +13,7 @@ import { date } from "yup";
 import ArrowLeftIcon from "components/icons/ArrowLeftIcon";
 import ArrowRightIcon from "components/icons/ArrowRightIcon";
 import { useRouter } from "next/router";
+import getChildren from "components/getChildren";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
@@ -22,6 +23,7 @@ export const getServerSideProps = withIronSessionSsr(
 			return { redirect: { destination: "/login" } }
 		}
 
+    props.children = await getChildren(props)
     props.currentChild = await getCurrentChild(props)
 
     return { props }

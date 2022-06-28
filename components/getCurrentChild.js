@@ -1,6 +1,8 @@
 export default async function(session) {
 
-  if (!session.currentChildId) return null
+  if (!session.currentChildId && session.children && session.children.length > 0) {
+    return session.children[0]
+  }
 
   const response = await fetch( process.env.NEXT_PUBLIC_API_URL + `/api/users/${session.currentChildId}`, {
       method: "GET",

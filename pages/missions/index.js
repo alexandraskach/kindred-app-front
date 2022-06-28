@@ -12,6 +12,7 @@ import getChildren from "components/getChildren";
 import redirectToAuth from "components/redirectToAuth";
 import getData from "components/getData";
 import DateToText from "components/DateToText";
+import getCurrentChild from "components/getCurrentChild";
 
 
 export const getServerSideProps = withIronSessionSsr(
@@ -22,9 +23,25 @@ export const getServerSideProps = withIronSessionSsr(
 			return { redirect: { destination: "/login" } }
 		}
 
+    props.user = await getData(props.token, '/api/users/' + props.userId)
     props.children = await getChildren(props)
-    props.currentChild = await getData(props.token, '/api/users/' + props.currentChildId)
-    props.contract = await getData(props.token, props.currentChild.childContract)
+
+    if (props.children.length == 0) {
+      return {
+        redirect: {
+          destination: '/settings'
+        }
+      }
+    }
+
+    props.currentChild = await getCurrentChild(props)
+
+    if (props.user.parent) {
+      props.contract = await getData(props.token, userId)
+    } else {
+      props.contract = await getData(props.token, props.currentChild.childContract)
+    }
+
     props.missions = await getData(props.token, '/api/contracts/' + props.contract.id + '/missions')
 
     return { props }
@@ -40,7 +57,9 @@ export default function render(props) {
       <SelectChild children={props.children} currentChild={props.currentChild} />
       <div className="mt-3">
         <Link href="/missions/add">
-          <a className="Button">Add mission <PlusIcon/></a>
+          {props.children && (
+            <a className="Button">Add mission <PlusIcon/></a>
+          )}
         </Link>
         <div className="mt-3">
           {props.missions.map(mission => {

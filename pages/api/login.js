@@ -49,10 +49,10 @@ export default withIronSessionApiRoute(async function login(req, res) {
 
 
   if (user) {
+    req.session.destroy();
     req.session.token = token
     req.session.userId = user.id
     await req.session.save();
     return res.status(200).json({ token, userId: user.id })
 	}
 }, sessionConfig);
-
