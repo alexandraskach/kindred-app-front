@@ -19,12 +19,6 @@ export const getServerSideProps = withIronSessionSsr(
     if (await redirectToAuth(props)) {
       return { redirect: { destination: "/login" } };
     }
-    props.ratings = await getData(props.token, "/api/ratings");
-    // nouveau lien d'api
-    // props.ratings = await getData(
-    //   props.token,
-    //   `/api/contracts/${props.contract.id}/ratings`
-    // );
     props.children = await getChildren(props);
     props.currentChild = await getData(
       props.token,
@@ -35,6 +29,10 @@ export const getServerSideProps = withIronSessionSsr(
       props.currentChild.childContract
     );
 
+    props.ratings = await getData(
+      props.token,
+      `/api/contracts/${props.contract.id}/ratings`
+    );
     let responseMissions;
     responseMissions = await fetch(
       process.env.NEXT_PUBLIC_API_URL +
@@ -62,13 +60,14 @@ function getMondayOfCurrentWeek(today) {
   console.log("monday", monday);
   return monday;
 }
-export async function newRating(missionId, parentRating) {
+export async function newRating(missionId, parentRating, contractId) {
   console.log("missionId", missionId);
   console.log("parentRating", parentRating);
   const data = {
     parentRating: parentRating,
     week: getMondayOfCurrentWeek(new Date()),
     mission: `api/missions/${missionId}`,
+    contract: `api/contracts/${contractId}`,
   };
   const response = await fetch("/api/add-rating", {
     method: "POST",
@@ -158,7 +157,11 @@ export default function render(props) {
                       />
                       <button
                         onClick={() =>
-                          newRating(mission.id, props.user.newRating)
+                          newRating(
+                            mission.id,
+                            props.user.newRating,
+                            props.contract.id
+                          )
                         }
                         className="Button Button--primary"
                       >
@@ -172,11 +175,52 @@ export default function render(props) {
         </div>
         <div className="ratings-title">
           {" "}
-          <h3>Ratings completed</h3>
+          <h3>Last week</h3>
         </div>
 
         <div className="ratings-container">
-          {ratingsOfLastWeek.map((rating) => {
+          {ratingsOfLastWeek.length === 0 ? (
+            <p>There is no ratings of last week</p>
+          ) : (
+            ratingsOfLastWeek.map((rating) => {
+              return (
+                <div key={rating.id} className="ratings__mission Card mb-2">
+                  <p className="body-semibold">
+                    Mission title
+                    <Link
+                      href={{
+                        pathname: "/ratings/edit-rating",
+                        query: {
+                          idRating: rating.id,
+                        },
+                      }}
+                    >
+                      <span style={{ float: "right" }} className="ml-2">
+                        <EditIcon></EditIcon>
+                      </span>
+                    </Link>
+                  </p>
+                  <div className="ratings__mission_button button-container">
+                    <p>Your rating : {rating.parentRating}/5</p>
+                    <p>
+                      Kid's rating :{" "}
+                      {rating.childRating
+                        ? `${rating.childRating}/5`
+                        : "There is no rating yet"}
+                    </p>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+        <div className="ratings-title">
+          {" "}
+          <h3>All ratings completed</h3>
+        </div>
+
+        <div className="ratings-container">
+          {props.ratings.map((rating) => {
             return (
               <div key={rating.id} className="ratings__mission Card mb-2">
                 <p className="body-semibold">
