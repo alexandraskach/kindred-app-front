@@ -21,39 +21,56 @@ export const getServerSideProps = withIronSessionSsr(
 
     props.children = await getChildren(props);
     props.currentChild = await getCurrentChild(props);
-    // if (currentChild === null) {
-    //   props.currentChild = props.children[0];
-    // }
 
     if (props.currentChild) {
       props.wallet = await getWallet(props);
+      props.contract = await getData(
+        props.token,
+        props.currentChild.childContract
+      );
+      props.missions = await getData(
+        props.token,
+        `/api/contracts/${props.contract.id}/missions`
+      );
     }
-    // props.contract = await getData(props.token, props.currentChild.childContract)
-
     return { props };
   },
   sessionConfig
 );
 
+const isAllMissionsHaveRating = (missions) => {
+  let isRating = missions.map((mission) =>
+    mission.ratings.length === 0 ? false : true
+  );
+  // console.log(isRating);
+  let result = isRating.find((mission) => mission === false);
+  return result;
+};
+
 export default function render(props) {
   console.log(props);
+  // let result = isAllMissionsHaveRating(props.missions);
+  // console.log(result);
   // return null
   return (
     <>
       <h2 className="mb-3">Dashboard</h2>
-
       <SelectChild
         children={props.children}
         currentChild={props.currentChild}
       />
-
       {props.currentChild && (
         <>
-          <Link href="/ratings">
-            <button className="Button Button--big Button--primary mb-2">
-              Rate new missions
-            </button>
-          </Link>
+          {props.missions.length > 0 ? (
+            <Link href="/ratings">
+              <button className="Button Button--big Button--primary mb-2">
+                Rate new missions
+              </button>
+            </Link>
+          ) : (
+            ""
+          )}
+
           <div className="Card">
             <div>
               <div className="d-flex justify-content-between align-items-center">
