@@ -19,6 +19,12 @@ export const getServerSideProps = withIronSessionSsr(
     if (await redirectToAuth(props)) {
       return { redirect: { destination: "/login" } };
     }
+    props.ratings = await getData(props.token, "/api/ratings");
+    // nouveau lien d'api
+    // props.ratings = await getData(
+    //   props.token,
+    //   `/api/contracts/${props.contract.id}/ratings`
+    // );
     props.children = await getChildren(props);
     props.currentChild = await getData(
       props.token,
@@ -29,8 +35,6 @@ export const getServerSideProps = withIronSessionSsr(
       props.currentChild.childContract
     );
 
-    // http://localhost:8000/api/contracts/4/missions
-    // http://localhost:8000/api/contracts/4/missions
     let responseMissions;
     responseMissions = await fetch(
       process.env.NEXT_PUBLIC_API_URL +
@@ -52,12 +56,18 @@ export const getServerSideProps = withIronSessionSsr(
   sessionConfig
 );
 
+function getMondayOfCurrentWeek(today) {
+  const first = today.getDate() - today.getDay() + 1;
+  const monday = new Date(today.setDate(first));
+  console.log("monday", monday);
+  return monday;
+}
 export async function newRating(missionId, parentRating) {
   console.log("missionId", missionId);
   console.log("parentRating", parentRating);
   const data = {
     parentRating: parentRating,
-    week: "2022-06-27",
+    week: getMondayOfCurrentWeek(new Date()),
     mission: `api/missions/${missionId}`,
   };
   const response = await fetch("/api/add-rating", {
@@ -97,14 +107,22 @@ const dateToText = (d) => {
   return dayText + " " + monthText + " " + date.getFullYear();
 };
 
+function getRatingsOfLastWeek(ratings) {
+  let thisWeek = getMondayOfCurrentWeek(new Date());
+  thisWeek = thisWeek.toISOString().split("T")[0];
+  console.log(thisWeek);
+  return ratings.filter((rating) => {
+    return rating.week < thisWeek;
+  });
+}
+
 export default function render(props) {
   console.log("props", props);
-
+  const ratingsOfLastWeek = getRatingsOfLastWeek(props.ratings);
+  console.log("ratingsOfLastWeek", ratingsOfLastWeek);
   const ratingChanged = (newRating) => {
     props.user.newRating = newRating;
   };
-
-  // const router = useRouter();
   return (
     <Base>
       <div id={styles.Ratings} className="mt-8">
@@ -119,252 +137,77 @@ export default function render(props) {
         </div>
         <div className="centered">
           <div className="ratings-container">
-            {props.currentChild.missions.map((mission) => (
-              <div key={mission.id} className="ratings__mission card mb-2">
-                <p>{mission.title}</p>
-                <p className="small">
-                  Start date : {dateToText(mission.start)}
-                </p>
-                <p className="small">End date : {dateToText(mission.end)}</p>
-                <p className="small">Points : {mission.points}</p>
-                <div className="ratings__mission_button button-container">
-                  <ReactStars
-                    className="mb-2"
-                    count={5}
-                    onChange={ratingChanged}
-                    size={24}
-                    activeColor="#ffd700"
-                  />
-                  <button
-                    onClick={() => newRating(mission.id, props.user.newRating)}
-                    className="Button Button--primary"
+            {props.currentChild.missions.map((mission) => {
+              // si la mission n'a pas de note on affiche la liste des mission à noter
+              if (mission.ratings.length < 1)
+                return (
+                  <div key={mission.id} className="ratings__mission card mb-2">
+                    <p className="body-semibold">{mission.title}</p>
+                    <div>
+                      <p>Start date : {dateToText(mission.start)}</p>
+                      <p>End date : {dateToText(mission.end)}</p>
+                      <p>Points : {mission.points}</p>
+                    </div>
+                    <div className="ratings__mission_button button-container">
+                      <ReactStars
+                        className="mb-2 ml-1"
+                        count={5}
+                        onChange={ratingChanged}
+                        size={24}
+                        activeColor="#f2c84b"
+                      />
+                      <button
+                        onClick={() =>
+                          newRating(mission.id, props.user.newRating)
+                        }
+                        className="Button Button--primary"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                );
+            })}
+          </div>
+        </div>
+        <div className="ratings-title">
+          {" "}
+          <h3>Ratings completed</h3>
+        </div>
+
+        <div className="ratings-container">
+          {ratingsOfLastWeek.map((rating) => {
+            return (
+              <div key={rating.id} className="ratings__mission Card mb-2">
+                <p className="body-semibold">
+                  Mission title
+                  <Link
+                    href={{
+                      pathname: "/ratings/edit-rating",
+                      query: {
+                        idRating: rating.id,
+                      },
+                    }}
                   >
-                    Submit
-                  </button>
+                    <span style={{ float: "right" }} className="ml-2">
+                      <EditIcon></EditIcon>
+                    </span>
+                  </Link>
+                </p>
+                <div className="ratings__mission_button button-container">
+                  <p>Your rating : {rating.parentRating}/5</p>
+                  <p>
+                    Kid's rating :{" "}
+                    {rating.childRating
+                      ? `${rating.childRating}/5`
+                      : "There is no rating yet"}
+                  </p>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-        <div className="ratings-title">
-          {" "}
-          <h3>Last week</h3>
-        </div>
-        <div className="">
-          <div className="ratings-container">
-            <div className="ratings__mission card mb-2">
-              <Link
-                href={{
-                  pathname: "/ratings/edit-rating",
-                  // query: {
-                  //   idReward: reward.id,
-                  // },
-                }}
-              >
-                <span style={{ float: "right" }} className="ml-2">
-                  <EditIcon></EditIcon>
-                </span>
-              </Link>
-              <p>
-                Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
-              </p>
-              <div className="ratings__mission_button button-container">
-                <p>Your rating</p>
-                <span data-index="0" data-forhalf="★">
-                  ★
-                </span>
-                <p>Kid's rating</p>
-              </div>
-            </div>
-            <div className="ratings__mission card mb-2">
-              <p>
-                Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
-              </p>
-              <div className="ratings__mission_button button-container">
-                <p>Your rating</p>
-                <p>Kid's rating</p>
-              </div>
-            </div>
-            <div className="ratings__mission card mb-2">
-              <p>
-                Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
-              </p>
-              <div className="ratings__mission_button button-container">
-                <p>Your rating</p>
-                <p>Kid's rating</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="ratings-title">
-          {" "}
-          <h3>Week of May 2</h3>
-        </div>
-        <div className="centered">
-          <div className="ratings-container">
-            <div className="ratings__mission card mb-2">
-              <p>
-                Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
-              </p>
-              <div className="ratings__mission_button button-container">
-                <p>Your rating</p>
-                <p>Kid's rating</p>
-              </div>
-            </div>
-            <div className="ratings__mission card mb-2">
-              <p>
-                Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
-              </p>
-              <div className="ratings__mission_button button-container">
-                <p>Your rating</p>
-                <p>Kid's rating</p>
-              </div>
-            </div>
-            <div className="ratings__mission card mb-2">
-              <p>
-                Aenean aliquam risus ante, vel auctor lorem vestibulum vitae
-              </p>
-              <div className="ratings__mission_button button-container">
-                <p>Your rating</p>
-                <p>Kid's rating</p>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </Base>
   );
 }
-
-// const Ratings = () => (
-//   <div>
-//     <Header retour="true"></Header>
-//     <div className="select-container">
-//       <select className="select">
-//         <option> Katie Moum</option>
-//       </select>
-//     </div>
-//     <div className="ratings-title">
-//       <h3>You can rate this down</h3>
-//     </div>
-//     <div className="centered">
-//       <div className="ratings-container">
-//         <div className="ratings__mission card">
-//           <p>Aenean aliquam risus ante, vel auctor lorem vestibulum vitae</p>
-//           <div className="ratings__mission_button button-container">
-//             <ReactStars
-//               count={5}
-//               onChange={ratingChanged}
-//               size={24}
-//               isHalf={true}
-//               emptyIcon={<TrashIcon></TrashIcon>}
-//               halfIcon={<TrashIcon></TrashIcon>}
-//               fullIcon={<TrashIcon></TrashIcon>}
-//               activeColor="#ffd700"
-//             />
-//             <button className="button-primary">Submit</button>
-//           </div>
-//         </div>
-//         <div className="ratings__mission card">
-//           <p>Aenean aliquam risus ante, vel auctor lorem vestibulum vitae</p>
-//           <div className="ratings__mission_button button-container">
-//             <ReactStars
-//               count={5}
-//               onChange={ratingChanged}
-//               size={24}
-//               isHalf={true}
-//               emptyIcon={<TrashIcon></TrashIcon>}
-//               halfIcon={<TrashIcon></TrashIcon>}
-//               fullIcon={<TrashIcon></TrashIcon>}
-//               activeColor="#ffd700"
-//             />
-//             <button className="button-primary">Submit</button>
-//           </div>
-//         </div>
-//         <div className="ratings__mission card">
-//           <p>Aenean aliquam risus ante, vel auctor lorem vestibulum vitae</p>
-//           <div className="ratings__mission_button button-container">
-//             <ReactStars
-//               count={5}
-//               onChange={ratingChanged}
-//               size={24}
-//               isHalf={true}
-//               emptyIcon={<TrashIcon></TrashIcon>}
-//               halfIcon={<TrashIcon></TrashIcon>}
-//               fullIcon={<TrashIcon></TrashIcon>}
-//               activeColor="#ffd700"
-//             />
-//             <button className="button-primary">Submit</button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//     <div className="ratings-title">
-//       {" "}
-//       <h3>Last week</h3>
-//     </div>
-//     <div className="centered">
-//       <div className="ratings-container">
-//         <div className="ratings__mission card">
-//           <p>Aenean aliquam risus ante, vel auctor lorem vestibulum vitae</p>
-//           <div className="ratings__mission_button button-container">
-//             <p>Your rating</p>
-//             <p>Kid's rating</p>
-//           </div>
-//         </div>
-//         <div className="ratings__mission card">
-//           <p>Aenean aliquam risus ante, vel auctor lorem vestibulum vitae</p>
-//           <div className="ratings__mission_button button-container">
-//             <p>Your rating</p>
-//             <p>Kid's rating</p>
-//           </div>
-//         </div>
-//         <div className="ratings__mission card">
-//           <p>Aenean aliquam risus ante, vel auctor lorem vestibulum vitae</p>
-//           <div className="ratings__mission_button button-container">
-//             <p>Your rating</p>
-//             <p>Kid's rating</p>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//     <div className="ratings-title">
-//       {" "}
-//       <h3>Week of May 2</h3>
-//     </div>
-//     <div className="centered">
-//       <div className="ratings-container">
-//         <div className="ratings__mission card">
-//           <p>Aenean aliquam risus ante, vel auctor lorem vestibulum vitae</p>
-//           <div className="ratings__mission_button button-container">
-//             <p>Your rating</p>
-//             <p>Kid's rating</p>
-//           </div>
-//         </div>
-//         <div className="ratings__mission card">
-//           <p>Aenean aliquam risus ante, vel auctor lorem vestibulum vitae</p>
-//           <div className="ratings__mission_button button-container">
-//             <p>Your rating</p>
-//             <p>Kid's rating</p>
-//           </div>
-//         </div>
-//         <div className="ratings__mission card">
-//           <p>Aenean aliquam risus ante, vel auctor lorem vestibulum vitae</p>
-//           <div className="ratings__mission_button button-container">
-//             <p>Your rating</p>
-//             <p>Kid's rating</p>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//     <div className="navbar">
-//       <Navbar></Navbar>
-//     </div>
-//   </div>
-// );
-
-// Ratings.propTypes = {};
-
-// Ratings.defaultProps = {};
-
-// export default Ratings;

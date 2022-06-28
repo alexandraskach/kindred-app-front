@@ -49,9 +49,11 @@ export default function render(props) {
 
       {props.currentChild && (
         <>
-          <button className="Button Button--big Button--primary mb-2">
-            Rate new missions
-          </button>
+          <Link href="/ratings">
+            <button className="Button Button--big Button--primary mb-2">
+              Rate new missions
+            </button>
+          </Link>
           <div className="Card">
             <div>
               <div className="d-flex justify-content-between align-items-center">
@@ -65,7 +67,7 @@ export default function render(props) {
               <Link href="/missions">
                 <a className="Button Button--tertiary">View missions</a>
               </Link>
-              <Link href="/missions/add-mission">
+              <Link href="/missions/add">
                 <a className="Button">Add mission</a>
               </Link>
             </div>
