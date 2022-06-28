@@ -25,8 +25,9 @@ export const getServerSideProps = withIronSessionSsr(
 
     props.user = await getData(props.token, '/api/users/' + props.userId)
     props.children = await getChildren(props)
-
-    if (props.children.length == 0) {
+    props.currentChild = await getCurrentChild(props)
+    
+    if (props.isParent && props.children.length == 0) {
       return {
         redirect: {
           destination: '/settings'
@@ -36,10 +37,10 @@ export const getServerSideProps = withIronSessionSsr(
 
     props.currentChild = await getCurrentChild(props)
 
-    if (props.user.parent) {
-      props.contract = await getData(props.token, userId)
-    } else {
+    if (props.isParent) {
       props.contract = await getData(props.token, props.currentChild.childContract)
+    } else {
+      props.contract = await getData(props.token, props.user.childContract)
     }
 
     props.missions = await getData(props.token, '/api/contracts/' + props.contract.id + '/missions')
@@ -54,13 +55,15 @@ export default function render(props) {
   return (
     <div>
       <h2>Missions</h2>
-      <SelectChild children={props.children} currentChild={props.currentChild} />
+      {props.isParent && (
+        <SelectChild children={props.children} currentChild={props.currentChild} />
+      )}
       <div className="mt-3">
-        <Link href="/missions/add">
-          {props.children && (
-            <a className="Button">Add mission <PlusIcon/></a>
-          )}
-        </Link>
+        {props.isParent && props.children && (
+          <Link href="/missions/add">
+              <a className="Button">Add mission <PlusIcon/></a>
+          </Link>
+        )}
         <div className="mt-3">
           {props.missions.map(mission => {
             return (
@@ -80,7 +83,9 @@ export default function render(props) {
                   )}
                 </div>
                 <div>{mission.description}</div>
-                <Link href={'/missions/edit/' + mission.id}><a className="position-fill"></a></Link>
+                {props.isParent && (
+                  <Link href={'/missions/edit/' + mission.id}><a className="position-fill"></a></Link>
+                )}
               </div>
             )
           })}

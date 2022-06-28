@@ -21,10 +21,10 @@ export const getServerSideProps = withIronSessionSsr(
 		props.child = await getData(props.token, '/api/users/' + context.params.childId)
 		props.contract = await getData(props.token, props.child.childContract)
 
-    const missions = await Promise.all(props.contract.missions.map(async (url) => getData(props.token, url)))
+    // const missions = await Promise.all(props.contract.missions.map(async (url) => getData(props.token, url)))
 
 		props.wallet = await getData(props.token, props.child.wallet)
-    props.missions = missions
+    // props.missions = missions
 	  
 		return { props }
 	},

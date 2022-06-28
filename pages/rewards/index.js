@@ -20,12 +20,7 @@ export const getServerSideProps = withIronSessionSsr(
     }
     props.children = await getChildren(props);
     props.currentChild = await getCurrentChild(props);
-    if (props.currentChild === null) {
-      props.currentChild = props.children[0];
-    }
-    if (!context.req.session.user) {
-      return { redirect: { destination: "/login" } };
-    }
+
     let responseRewards;
     responseRewards = await fetch(
       process.env.NEXT_PUBLIC_API_URL +
@@ -66,22 +61,32 @@ export default function render(props) {
   return (
     <Base>
       <div id={styles.Rewards} className="mt-8 wrapper">
-        <div className="select-container">
-          <SelectChild
-            children={props.children}
-            currentChild={props.currentChild}
-          ></SelectChild>
-        </div>
+        {props.isParent && (
+          <div className="select-container">
+            <SelectChild
+              children={props.children}
+              currentChild={props.currentChild}
+            ></SelectChild>
+          </div>
+        )}
         <h2 className="mt-2">Rewards</h2>
-        <Link href="/rewards/add-reward">
-          <button className="Button Button--outline">
-            {" "}
-            Add reward{" "}
-            <span className="ml-2">
-              <PlusIcon></PlusIcon>
-            </span>
-          </button>
-        </Link>
+        {props.isParent && (
+          <Link href="/rewards/add-reward">
+            <button className="Button Button--outline">
+              {" "}
+              Add reward{" "}
+              <span className="ml-2">
+                <PlusIcon></PlusIcon>
+              </span>
+            </button>
+          </Link>
+        )}
+        {props.rewards.length == 0 && (
+          <div>
+            <p>There is no reward available yet ! 😕</p>
+            <Link href="/"><a className="Button">Go to dashboard</a></Link>
+          </div>
+        )}
         {props.rewards.map((reward) => (
           <div key={reward.id} className="Card">
             <h2>

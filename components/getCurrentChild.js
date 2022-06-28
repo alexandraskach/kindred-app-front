@@ -1,5 +1,7 @@
 export default async function(session) {
 
+  if (!session.isParent) return null
+
   if (!session.currentChildId && session.children && session.children.length > 0) {
     return session.children[0]
   }

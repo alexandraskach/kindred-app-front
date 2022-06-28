@@ -11,6 +11,7 @@ import getData from "components/getData";
 import { useState } from "react";
 import Link from "next/link";
 import EditIcon from "components/icons/EditIcon";
+import getCurrentChild from "components/getCurrentChild";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
@@ -19,36 +20,20 @@ export const getServerSideProps = withIronSessionSsr(
     if (await redirectToAuth(props)) {
       return { redirect: { destination: "/login" } };
     }
+
+    props.user = await getData(props.token, '/api/users/' + props.userId)
     props.children = await getChildren(props);
-    props.currentChild = await getData(
-      props.token,
-      "/api/users/" + props.currentChildId
-    );
-    props.contract = await getData(
-      props.token,
-      props.currentChild.childContract
-    );
+    props.currentChild = await getCurrentChild(props);
 
-    props.ratings = await getData(
-      props.token,
-      `/api/contracts/${props.contract.id}/ratings`
-    );
-    let responseMissions;
-    responseMissions = await fetch(
-      process.env.NEXT_PUBLIC_API_URL +
-        `/api/contracts/${props.contract.id}/missions`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + props.token,
-        },
-      }
-    );
+    if (props.isParent) {
+      props.contract = await getData(props.token, props.currentChild.childContract);
+    } else {
+      props.contract = await getData(props.token, props.user.childContract);
+    }
+    
+    props.missions = await getData(props.token, `/api/contracts/${props.contract.id}/missions`)
+    props.ratings = await getData(props.token, `/api/contracts/${props.contract.id}/ratings`);
 
-    let missions = await responseMissions.json();
-    props.currentChild.missions = missions;
     return { props };
   },
   sessionConfig
@@ -57,28 +42,47 @@ export const getServerSideProps = withIronSessionSsr(
 function getMondayOfCurrentWeek(today) {
   const first = today.getDate() - today.getDay() + 1;
   const monday = new Date(today.setDate(first));
-  console.log("monday", monday);
   return monday;
 }
-export async function newRating(missionId, parentRating, contractId) {
-  console.log("missionId", missionId);
-  console.log("parentRating", parentRating);
+export async function newRating(missionId, parentRating, contractId, router, hasRating) {
   const data = {
     parentRating: parentRating,
     week: getMondayOfCurrentWeek(new Date()),
     mission: `api/missions/${missionId}`,
     contract: `api/contracts/${contractId}`,
   };
-  const response = await fetch("/api/add-rating", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  const json = await response.json();
-  console.log(json);
+
+  if (hasRating) {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/ratings/" + hasRating, {
+      method: "PUT",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const json = await response.json();
+    console.log(json);
+    console.log(response.status)
+    router.replace(router.asPath)
+  } else {
+    const response = await fetch("/api/add-rating", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const json = await response.json();
+    console.log(json);
+    console.log(response.status)
+    router.replace(router.asPath)
+  }
+}
+
+function isSameDate(date1, date2) {
+  return (date1.getFullYear() == date2.getFullYear() && date1.getMonth() == date2.getMonth() && date1.getDate() == date2.getDate())
 }
 
 const dateToText = (d) => {
@@ -109,36 +113,68 @@ const dateToText = (d) => {
 function getRatingsOfLastWeek(ratings) {
   let thisWeek = getMondayOfCurrentWeek(new Date());
   thisWeek = thisWeek.toISOString().split("T")[0];
-  console.log(thisWeek);
   return ratings.filter((rating) => {
     return rating.week < thisWeek;
   });
 }
 
 export default function render(props) {
-  console.log("props", props);
+  // is current week
+  props.ratings.map(rating => {
+    let currentDate = new Date(),
+      ratingDate = new Date(rating.week)
+      currentDate.setDate(currentDate.getDate() - (6 - (6 - currentDate.getDay())))
+      ratingDate.setDate(ratingDate.getDate() - (6 - (6 - ratingDate.getDay())))
+
+      rating.isCurrentWeek = isSameDate(currentDate, ratingDate)
+  })
+
+  // set ratings in missions
+  props.missions.map(mission => {
+    mission.ratings = []
+    mission.isRated = false
+    mission.hasRating = false
+
+    props.ratings.map(rating => {
+      if (mission.id == rating.mission.replace('/api/missions/', '')) {
+        mission.ratings.push(rating)
+
+        if (rating.isCurrentWeek) {
+          if (props.isParent && (rating.parentRating + 1)) mission.isRated = true
+          if (!props.isParent && (rating.childRating + 1)) mission.isRated = true
+          if (props.isParent && (rating.childRating + 1)) mission.hasRating = rating.id
+          if (!props.isParent && (rating.parentRating + 1)) mission.hasRating = rating.id
+        }
+      }
+    })
+  })
+
+
+
   const ratingsOfLastWeek = getRatingsOfLastWeek(props.ratings);
-  console.log("ratingsOfLastWeek", ratingsOfLastWeek);
   const ratingChanged = (newRating) => {
     props.user.newRating = newRating;
   };
+  const router = useRouter()
   return (
     <Base>
-      <div id={styles.Ratings} className="mt-8">
-        <div className="select-container">
-          <SelectChild
-            children={props.children}
-            currentChild={props.currentChild}
-          ></SelectChild>
-        </div>
+      <div id={styles.Ratings}>
+        {props.isParent && (
+          <div className="select-container">
+            <SelectChild
+              children={props.children}
+              currentChild={props.currentChild}
+            ></SelectChild>
+          </div>
+        )}
         <div className="ratings-title mb-2 mt-2">
-          <h3>You can rate this down</h3>
+          <h2>You can rate this down</h2>
         </div>
         <div className="centered">
           <div className="ratings-container">
-            {props.currentChild.missions.map((mission) => {
+            {props.missions.map((mission) => {
               // si la mission n'a pas de note on affiche la liste des mission à noter
-              if (mission.ratings.length < 1)
+              if (!mission.isRated)
                 return (
                   <div key={mission.id} className="ratings__mission card mb-2">
                     <p className="body-semibold">{mission.title}</p>
@@ -156,11 +192,13 @@ export default function render(props) {
                         activeColor="#f2c84b"
                       />
                       <button
-                        onClick={() =>
+                        onClick={(e) =>
                           newRating(
                             mission.id,
                             props.user.newRating,
-                            props.contract.id
+                            props.contract.id,
+                            router,
+                            mission.hasRating
                           )
                         }
                         className="Button Button--primary"
@@ -187,27 +225,28 @@ export default function render(props) {
                 <div key={rating.id} className="ratings__mission Card mb-2">
                   <p className="body-semibold">
                     Mission title
-                    <Link
-                      href={{
-                        pathname: "/ratings/edit-rating",
-                        query: {
-                          idRating: rating.id,
-                        },
-                      }}
-                    >
-                      <span style={{ float: "right" }} className="ml-2">
-                        <EditIcon></EditIcon>
-                      </span>
-                    </Link>
+                    {props.isParent && (
+                      <Link
+                        href={{
+                          pathname: "/ratings/edit-rating",
+                          query: {
+                            idRating: rating.id,
+                          },
+                        }}
+                      >
+                        <span style={{ float: "right" }} className="ml-2">
+                          <EditIcon></EditIcon>
+                        </span>
+                      </Link>
+                    )}
                   </p>
                   <div className="ratings__mission_button button-container">
-                    <p>Your rating : {rating.parentRating}/5</p>
-                    <p>
-                      Kid's rating :{" "}
-                      {rating.childRating
-                        ? `${rating.childRating}/5`
-                        : "There is no rating yet"}
-                    </p>
+                    {props.isParent && (
+                      <>
+                        <p>Your rating : {rating.parentRating}</p>
+                        <p>Child's rating' : {rating.parentRating}</p>
+                      </>
+                    )}
                   </div>
                 </div>
               );
@@ -225,18 +264,20 @@ export default function render(props) {
               <div key={rating.id} className="ratings__mission Card mb-2">
                 <p className="body-semibold">
                   Mission title
-                  <Link
-                    href={{
-                      pathname: "/ratings/edit-rating",
-                      query: {
-                        idRating: rating.id,
-                      },
-                    }}
-                  >
-                    <span style={{ float: "right" }} className="ml-2">
-                      <EditIcon></EditIcon>
-                    </span>
-                  </Link>
+                  {props.isParent && (
+                    <Link
+                      href={{
+                        pathname: "/ratings/edit-rating",
+                        query: {
+                          idRating: rating.id,
+                        },
+                      }}
+                    >
+                      <span style={{ float: "right" }} className="ml-2">
+                        <EditIcon></EditIcon>
+                      </span>
+                    </Link>
+                  )}
                 </p>
                 <div className="ratings__mission_button button-container">
                   <p>Your rating : {rating.parentRating}/5</p>
