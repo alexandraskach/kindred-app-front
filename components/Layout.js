@@ -9,7 +9,9 @@ export function Layout({ children }) {
       {/* header */}
       <Header/>
       <main id="Page">{children}</main>
-      <Nav/>
+      {children.props.userId && (
+        <Nav/>
+      )}
     </>
   );
 }
