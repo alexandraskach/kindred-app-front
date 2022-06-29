@@ -118,19 +118,19 @@ export default function render() {
 								{errors.confirmPassword && touched.confirmPassword && <span className='form-error'>{errors.confirmPassword}</span>}
 
 								{/* remember */}
-								<div className='d-flex align-items-center mt-1 color-gray'>
+								{/* <div className='d-flex align-items-center mt-1 color-gray'>
 									<Field type='checkbox' name='remember' />
 									<label className='small m-0'>Remember me</label>
-								</div>
+								</div> */}
 
-								<button className='Button Button--primary m-0 mt-2' type='submit'>Sign in</button>
+								<button className='Button Button--primary m-0 mt-2' type='submit'>Sign up</button>
 							</Form>
 						)
 					}}
 				</Formik>
 
 				<div className='color-gray'>
-					<p className='small m-0'>You have an account ? <a href="/login">Sign up</a></p>
+					<p className='small m-0'>You have an account ? <a href="/login">Sign in</a></p>
 					<p className='small m-0'><a href="#0">Forgot password ?</a></p>
 				</div>
 			</div>

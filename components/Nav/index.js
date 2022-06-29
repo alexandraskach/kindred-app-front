@@ -5,6 +5,8 @@ import MenuIcon from "components/icons/MenuIcon";
 import MenuFillIcon from "components/icons/MenuFillIcon";
 import PiggyBankIcon from "components/icons/PiggyBankIcon";
 import PiggyBankFillIcon from "components/icons/PiggyBankFillIcon";
+import SettingsIcon from "components/icons/SettingsIcon";
+import SettingsFIllIcon from "components/icons/SettingsFillIcon";
 // import styles from './index.module.scss'
 
 export default function Nav() {
@@ -47,21 +49,21 @@ export default function Nav() {
           <span className="Nav__container__item__text">Dashboard</span>
         </a>
         <a
-          href="/piggy-bank"
+          href="/settings"
           className={
             "Nav__container__item " +
-            (router.pathname == "/rewards"
+            (router.pathname == "/settings"
               ? "Nav__container__item--active"
               : "")
           }
         >
           <div className="Nav__container__item__icon">
-            <PiggyBankIcon></PiggyBankIcon>
+            <SettingsIcon/>
           </div>
           <div className="Nav__container__item__icon--fill">
-            <PiggyBankFillIcon></PiggyBankFillIcon>
+            <SettingsFIllIcon/>
           </div>
-          <span className="Nav__container__item__text">Piggybank</span>
+          <span className="Nav__container__item__text">Settings</span>
         </a>
       </div>
     </nav>

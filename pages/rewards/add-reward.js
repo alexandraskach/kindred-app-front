@@ -1,32 +1,41 @@
 import { Base } from "components/Base";
+import getChildren from "components/getChildren";
+import getCurrentChild from "components/getCurrentChild";
+import redirectToAuth from "components/redirectToAuth";
 import { Form, Formik, Field } from "formik";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionConfig } from "logic/session";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
-    if (!context.req.session.user) {
+    const props = context.req.session;
+    if (await redirectToAuth(props)) {
       return { redirect: { destination: "/login" } };
     }
-    let props = context.req.session;
+
+    props.children = await getChildren(props)
+    props.currentChild = await getCurrentChild(props)
+
     return { props };
   },
   sessionConfig
 );
 
-export async function onSubmit(data, token) {
+export async function onSubmit(data, token, router) {
   console.log(data);
-  const response = await fetch("/api/add-reward", {
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/rewards", {
     method: "POST",
     headers: {
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
+      "Authorization": "Bearer " + token,
     },
     body: JSON.stringify(data),
   });
   const json = await response.json();
   console.log(json);
+  router.replace('/rewards')
 }
 
 export function validation(values) {
@@ -43,6 +52,7 @@ export function validation(values) {
 
 export default function render(props) {
   console.log(props);
+  const router = useRouter()
   return (
     <Base>
       <div>
@@ -51,9 +61,9 @@ export default function render(props) {
           initialValues={{
             points: "",
             description: "",
-            user: `/api/users/${props.currentChildId}`,
+            user: `/api/users/${props.currentChild.id}`,
           }}
-          onSubmit={(data) => onSubmit(data, props.token)}
+          onSubmit={(data) => onSubmit(data, props.token, router)}
           validate={validation}
         >
           {({ errors, touched, validateOnChange }) => {

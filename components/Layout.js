@@ -7,11 +7,9 @@ export function Layout({ children }) {
   return (
     <>
       {/* header */}
-      <Header/>
+      {children.props.userId && ( <Header/> )}
       <main id="Page">{children}</main>
-      {children.props.userId && (
-        <Nav/>
-      )}
+      {children.props.userId && ( <Nav/> )}
     </>
   );
 }

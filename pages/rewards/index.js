@@ -11,6 +11,7 @@ import TrashIcon from "components/icons/TrashIcon";
 import redirectToAuth from "components/redirectToAuth";
 import getChildren from "components/getChildren";
 import getCurrentChild from "components/getCurrentChild";
+import getData from "components/getData";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps(context) {
@@ -21,22 +22,12 @@ export const getServerSideProps = withIronSessionSsr(
     props.children = await getChildren(props);
     props.currentChild = await getCurrentChild(props);
 
-    let responseRewards;
-    responseRewards = await fetch(
-      process.env.NEXT_PUBLIC_API_URL +
-        `/api/users/${props.currentChildId}/rewards`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + props.token,
-        },
-      }
-    );
+    if (props.isParent) {
+      props.rewards = await getData(props.token, '/api/users/' + props.currentChild.id + '/rewards')
+    } else {
+      props.rewards = await getData(props.token, '/api/users/' + props.userId + '/rewards')
+    }
 
-    let rewards = await responseRewards.json();
-    props.rewards = rewards;
     return { props };
   },
   sessionConfig
@@ -60,7 +51,7 @@ export default function render(props) {
   console.log("props", props);
   return (
     <Base>
-      <div id={styles.Rewards} className="mt-8 wrapper">
+      <div id={styles.Rewards} className="wrapper">
         {props.isParent && (
           <div className="select-container">
             <SelectChild
@@ -84,33 +75,39 @@ export default function render(props) {
         {props.rewards.length == 0 && (
           <div>
             <p>There is no reward available yet ! 😕</p>
-            <Link href="/"><a className="Button">Go to dashboard</a></Link>
+            {!props.isParent && (
+              <Link href="/"><a className="Button">Go to dashboard</a></Link>
+            )}
           </div>
         )}
         {props.rewards.map((reward) => (
           <div key={reward.id} className="Card">
-            <h2>
+            <h2 className="m-0">
               {reward.points} points{" "}
-              <Link
-                href={{
-                  pathname: "/rewards/edit-reward",
-                  query: {
-                    idReward: reward.id,
-                  },
-                }}
-              >
-                <span style={{ float: "right" }}>
-                  <EditIcon></EditIcon>
-                </span>
-              </Link>
-              <span
-                style={{ float: "right" }}
-                onClick={() => deleteReward(reward.id)}
-              >
-                <TrashIcon></TrashIcon>
-              </span>
+              {props.isParent && (
+                <>
+                  <Link
+                    href={{
+                      pathname: "/rewards/edit-reward",
+                      query: {
+                        idReward: reward.id,
+                      },
+                    }}
+                  >
+                    <span style={{ float: "right" }}>
+                      <EditIcon></EditIcon>
+                    </span>
+                  </Link>
+                  <span
+                    style={{ float: "right" }}
+                    onClick={() => deleteReward(reward.id)}
+                  >
+                    <TrashIcon></TrashIcon>
+                  </span>
+                </>
+              )}
             </h2>
-            <p>{reward.description}</p>
+            <p className="m-0">{reward.description}</p>
           </div>
         ))}
       </div>

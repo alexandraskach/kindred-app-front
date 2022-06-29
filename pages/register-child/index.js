@@ -189,7 +189,7 @@ export default function render({ userId }) {
                   className="Button Button--primary m-0 mt-2"
                   type="submit"
                 >
-                  Create
+                  Register child
                 </button>
               </Form>
             );

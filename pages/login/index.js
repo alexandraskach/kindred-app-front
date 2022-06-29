@@ -122,13 +122,13 @@ export default function render(props) {
               )}
 
               {/* remember */}
-              <div className="d-flex align-items-center mt-1 color-gray">
+              {/* <div className="d-flex align-items-center mt-1 color-gray">
                 <Field type="checkbox" name="remember" />
                 <label className="small m-0">Remember me</label>
-              </div>
+              </div> */}
 
               <button className="Button Button--primary m-0 mt-2" type="submit">
-                Sign up
+                Sign in
               </button>
             </Form>
           );
@@ -137,7 +137,7 @@ export default function render(props) {
 
       <div className="color-gray">
         <p className="small m-0">
-          Don't have an account ? <a href="/register">Sign in</a>
+          Don't have an account ? <a href="/register">Sign up</a>
         </p>
       </div>
     </div>
